@@ -1,0 +1,12 @@
+{ "name": "aircraft - instrument (EasyGauge)",
+  "background": [ "background.png" ],
+  "cover"     : [ "cover.png" ],
+  "bezel"     : [ "bezel.png" ],
+  "canvas"    : [ 0, 0, 720, 720 ],
+  "markups" : [
+  ],
+  "scales": [
+  ],
+  "gauges" : [
+  ]
+}  
