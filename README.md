@@ -6,9 +6,9 @@
 
 ## Requirements
 
-- Release asset .tar file from this Github
+- Release asset .tar file from this Github account
 - A licensed version of Air Manager or Air Player 4.1.3
-- A flight fimulator application
+- A flight simulator application
 - A external editor (Notepad++ recommended)
 
 Platforms: Any platform supported by Air Manager (tested under Windows 10 Home)
@@ -44,6 +44,13 @@ Support for gauges with horizontal or vertical scales is planned
 - A subscription for each gauge
 - Received values are indicated with perfect match on the assigned scale
 - Indicator animation smoothing
+- Many default settings for ease of specification
+
+## Advanced Features
+
+- User property "Index" supporting multiple instances a "Easy Gauge" instrument in the same panel.
+- Change default settings to your preferences
+- Gauge position and scale tweaking
 
 ## Dependencies
 
