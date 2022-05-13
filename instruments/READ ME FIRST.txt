@@ -1,0 +1,37 @@
+All instruments are "Easy Gauge" instruments that I have created myself. 
+
+* License terms
+You may use, change or republish the files free of charge. When republishing 
+you must mention the source ("Easy Gauges" by Tetrachromat) and provide 
+a link to the repository (https://github.com/Cr4O13/easy-gauges).
+
+* Images
+All image files (background and some cover images) are created by myself. 
+But the instruments require additional (cover, bezel and needle) images. 
+
+As I have reused images from Air Manager community instruments, I cannot 
+redistribute them here. You need to create those images yourself or also 
+reuse images from Air Manager community instruments. Such images are located
+in the instruments 'resources' folder. Choose one that matches best.
+
+The preview image is a (reduced) screenshot of the instrument, as it appears
+with the images I have choosen.
+
+* JSON instrument specification
+If you are new to "Easy Gauges" I strongly recommend to read at least the
+"Concepts" section of the user manual, to familiarize yourself with the 
+features and terminology of "Easy Gauges".
+
+* Support "Easy Gauges"
+I would really apreciate any comments on your experiences with "Easy Gauges". 
+Be it 
+- features that don't work as you expect
+- features that you are missing
+- features that need more explanations in the user manual
+
+You can leave a post on the topics I have created in the Air Manager forums.
+For additional support you can send a PM to "Tetrachromat".
+
+If you think "Easy Gauges" are useful, please spread the word on other platforms!
+
+Thank you.

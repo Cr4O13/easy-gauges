@@ -1,0 +1,64 @@
+{ "name": "BN-2 - Dual Engine Fuel Flow (EasyGauge)",
+  "background": [ "background 161616.png" ],
+  "cover"     : [ ],
+  "bezel"     : [ "bezel.png" ],
+  "canvas"    : [ 0, 0, 720, 720 ],
+  "markups" : [
+    { "style": {"size": 56}, "position": [360, 230], "text": "FUEL FLOW" },
+    { "style": {"size": 32}, "position": [360, 480], "text": "GALLONS PER HOUR" }
+  ],
+  "scales": [
+    { "kind": "circular",
+      "center": [ 360, 360 ],
+      "marks": {
+        "offset": [300, 270, 260 ],
+        "width": 4,
+        "sections": [
+          [   0.0, -170.0, 12, 4 ],
+          [  12.0, -150.0,  4, 2 ],
+          [  24.0, -110.0,  4, 1 ],
+          [  36.0,  -15.0        ]
+        ]
+      },
+      "values": { 
+        "every"  : 1, 
+        "offset" : 230,
+        "style" : { "size": 52 },
+        "power"  : 0
+      }
+    },
+    { "kind": "circular",
+      "center": [ 360, 360 ],
+      "marks": {
+        "offset": [300, 270, 260 ],
+        "width": 4,
+        "sections": [
+          [   0.0, 170.0, 12, 4 ],
+          [  12.0, 150.0,  4, 2 ],
+          [  24.0, 110.0,  4, 1 ],
+          [  36.0,  15.0        ]
+        ]
+      },
+      "values": { 
+        "every"  : 1, 
+        "offset" : 230,
+        "style" : { "size": 52 },
+        "power"  : 0
+      }
+    }
+  ],
+  "gauges" : [
+    { "variable" : [ "ENG FUEL FLOW GPH:1", "GALLONS PER HOUR" ],
+      "value"    : 0.0,
+      "scale"    : 1,
+      "indicator": [ "needle_left.png", 620, 620 ],
+      "animation": [ "LOG", 0.05  ]
+    },
+    { "variable" : [ "ENG FUEL FLOW GPH:2", "GALLONS PER HOUR" ],
+      "value"    : 0.0,
+      "scale"    : 2,
+      "indicator": [ "needle_right.png", 620, 620 ],
+      "animation": [ "LOG", 0.05  ]
+    }
+  ]
+}  

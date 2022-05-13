@@ -1,0 +1,46 @@
+{ "name": "BN-2 - Engine Oil Temperature (EasyGauge)",
+  "bezel" : [ "bezel_50.png" ],
+  "cover" : [],
+  "markups" : [
+    { "style": {"size": 32}, "position": [260, 150], "text": "°F" },
+    { "style": {"size": 32}, "position": [260, 180], "text": "OIL TEMP" }
+  ],
+  "scales": [
+    { "center": [ 260, 280 ],
+      "marks": { 
+        "offset"  : [ 200, 180, 170 ], 
+        "sections": [
+          [    0, -60.0,   0 ],
+          [   50, -50.0,  50 ],
+          [  250,  50.0,   0 ],
+          [  300,  60.0      ]
+        ]
+      },
+      "values": { "offset": 226, "style" : { "size": 40 } },
+      "arcs": [
+        { "offset": 180, "width": 20, "segments": [ 
+            [  30, "red"    ],
+            [  50, "yellow" ],
+            [ 165, "green"  ],
+            [ 200, "yellow" ],
+            [ 245           ]
+          ]
+        }
+      ],
+      "redlines": { "offset" : [ 200, 170 ], "values" : [ 245 ], "width"  : 8 }
+    }
+  ],    
+  "gauges" : [
+    { "variable"  : [ "GENERAL ENG OIL TEMPERATURE:%s", "FAHRENHEIT" ],
+      "value"     : 58.0,
+      "indicator" : [ "needle.png" ],
+      "sections": [
+        [    0, -60.0 ],
+        [   50, -50.0 ],
+        [  270,  50.0 ],
+        [  300,  60.0 ]
+      ],
+      "animation" : [ "LOG", 0.05 ]
+    }
+  ]
+}

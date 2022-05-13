@@ -1,0 +1,96 @@
+{ "name": "BN-2 - Dual Engine EGT (EasyGauge)",
+  "background": [ "background.png" ],
+  "cover"     : [ "cover.png" ],
+  "bezel"     : [ "bezel.png" ],
+  "canvas"    : [ 0, 0, 720, 720 ],
+  "markups" : [
+    { "style": {"size": 42}, "position": [360, 520], "text": "°F"        },
+    { "style": {"size": 32}, "position": [360, 550], "text": "x100"      }
+  ],
+  "scales": [
+    { "kind": "circular",
+      "center": [ 180, 360 ],
+      "marks": {
+        "offset": [ 180, 170, 164],
+        "width": 3,
+        "sections": [
+          [  700.0, 145.0,   0           ],
+          [  800.0, 135.0, 100, 50, 0.75 ],
+          [ 1800.0,  45.0, 200           ],
+          [ 1900.0,  40.0                ]
+        ]
+      },
+      "values": { 
+        "every"  : 2, 
+        "offset" : 140, 
+        "style" : { "size": 36 },
+        "power" : 2       
+      },
+      "arcs": [
+        { "offset"  : 178, 
+          "width"   : 4, 
+          "segments": [
+            [  800.0, "white" ],
+            [ 1800.0          ]
+          ]
+        }
+      ],
+      "redlines": { "offset" : [ 180, 160 ], "values" : [ 1675 ], "width"  : 6 }
+    },
+    { "kind": "circular",
+      "center": [ 540, 360 ],
+      "marks": {
+        "offset": [ 180, 170, 164],
+        "width": 4,
+        "sections": [
+          [  700.0, -145.0,   0           ],
+          [  800.0, -135.0, 100, 50, 0.5  ],
+          [ 1800.0,  -45.0, 200           ],
+          [ 1900.0,  -40.0                ]
+        ]
+      },
+      "values": { 
+        "every"  : 2, 
+        "offset" : 140, 
+        "style" : { "size": 36 },
+        "power" : 2       
+      },
+      "arcs": [
+        { "offset"  : 178, 
+          "width"   : 4, 
+          "segments": [
+            [  800.0, "white" ],
+            [ 1800.0          ]
+          ]
+        }
+      ],
+      "redlines": { "offset" : [ 180, 160 ], "values" : [ 1675 ], "width"  : 6 }
+    }
+  ],
+  "gauges" : [
+    { "variable" : [ "GENERAL ENG EXHAUST GAS TEMPERATURE:1", "FAHRENHEIT" ],
+      "value"    : 0.0,
+      "scale"    : 1,
+      "indicator": [ "needle.png", 350, 350 ],
+      "sections": [
+        [  700.0, 145.0 ],
+        [  800.0, 135.0 ],
+        [ 1200.0,  45.0 ],
+        [ 1900.0,  40.0 ]
+      ],
+      "animation": [ "LOG", 0.05  ]
+    },
+    { "variable" : [ "GENERAL ENG EXHAUST GAS TEMPERATURE:2", "FAHRENHEIT" ],
+      "value"    : 0.0,
+      "scale"    : 2,
+      "indicator": [ "needle.png", 350, 350 ],
+      "sections": [
+        [  700.0, -145.0 ],
+        [  800.0, -135.0 ],
+        [ 1200.0,  -45.0 ],
+        [ 1900.0,  -40.0 ]
+      ],
+      "animation": [ "LOG", 0.05  ]
+    }
+  ]
+}  

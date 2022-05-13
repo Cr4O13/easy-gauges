@@ -1,0 +1,41 @@
+{ "name": "Easygauge - BN-2 Airspeed",
+  "cover" : [],
+  "markups" : [
+    { "style": {"size": 32}, "position": [360, 310], "text": "AIRSPEED" },
+    { "style": {"size": 56}, "position": [360, 430], "text": "KNOTS"    }
+  ],
+  "scales": [
+    { "marks": { 
+        "offset"  : [ 290, 252, 240 ], "width"   : 6, 
+        "sections": [
+          [    0,   0.0,  0          ],
+          [   30,  12.0, 10,  5, 0.5 ],
+          [   50,  35.0, 10,  5, 0.5 ],
+          [  170, 270.0, 10,  5, 0.5 ],
+          [  220, 340.0             ]
+        ]
+      },
+      "values": { "every"  : 2, "offset" : 200, "style" : { "size": 60 } },
+      "arcs": [
+        { "offset"  : 275, "width"   : 30, "segments": [ 
+            [  50, "lime"  ],
+            [ 134, "gold"  ],
+            [ 177          ]
+          ]
+        },
+        { "offset"  : 268, "width"   : 15, "segments": [ 
+            [  40, "white"   ],
+            [  88            ]
+          ]
+        }
+      ],
+      "redlines": { "offset" : [ 290, 220 ], "values" : [ 177 ], "width"  : 10 }
+    }
+  ],    
+  "gauges" : [
+    { "variable"  : [ "AIRSPEED INDICATED", "KNOTS" ],
+      "indicator" : [ "needle.png" ],
+      "animation" : [ "LOG", 0.05 ]
+    }
+  ]
+}

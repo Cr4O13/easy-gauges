@@ -1,0 +1,45 @@
+{ "name": "BN-2 - Engine Oil Pressure (EasyGauge)",
+  "bezel" : [ "bezel_50.png" ],
+  "cover" : [],
+  "markups" : [
+    { "style": {"size": 32}, "position": [260, 150], "text": "psi" },
+    { "style": {"size": 32}, "position": [260, 180], "text": "OIL PRESS." }
+  ],
+  "scales": [
+    { "center": [ 260, 280 ],
+      "marks": { 
+        "offset"  : [ 200, 180, 170 ], 
+        "sections": [
+          [    0, -60.0,   0 ],
+          [   20, -50.0,  20 ],
+          [  120,  50.0,   0 ],
+          [  140,  60.0      ]
+        ]
+      },
+      "values": { "offset": 226, "style" : { "size": 40 } },
+      "arcs": [
+        { "offset": 180, "width": 20, "segments": [ 
+            [  20, "red"    ],
+            [  25, "yellow" ],
+            [  55, "green"  ],
+            [  95, "yellow" ],
+            [ 115           ]
+          ]
+        }
+      ],
+      "redlines": { "offset" : [ 200, 170 ], "values" : [ 115 ], "width"  : 8 }
+    }
+  ],    
+  "gauges" : [
+    { "variable"  : [ "GENERAL ENG OIL PRESSURE:%s", "PSI" ],
+      "indicator" : [ "needle.png" ],
+      "sections": [
+        [    0, -60.0 ],
+        [   13, -50.0 ],
+        [   72,  50.0 ],
+        [   80,  60.0 ]
+      ],
+      "animation" : [ "LOG", 0.05 ]
+    }
+  ]
+}
