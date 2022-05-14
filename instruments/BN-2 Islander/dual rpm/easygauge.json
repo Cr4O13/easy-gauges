@@ -1,0 +1,100 @@
+{ "name": "BN-2 - Dual Engine RPM (EasyGauge)",
+  "background": [ "background 161616.png" ],
+  "cover"     : [ "cover_rpm.png" ],
+  "bezel"     : [ "bezel.png" ],
+  "canvas"    : [ 0, 0, 720, 720 ],
+  "markups" : [
+    { "style": {"size": 64}, "position": [360, 560], "text": "R.P.M"        },
+    { "style": {"size": 36}, "position": [360, 600], "text": "x1000"      }
+  ],
+  "scales": [
+    { "kind": "circular",
+      "center": [ 140, 360 ],
+      "marks": {
+        "offset": [ 220, 182, 170 ],
+        "width": 4,
+        "sections": [
+          [    0.0, 160.0,   0            ],
+          [  500.0, 150.0,   0, 100, 0.66 ],
+          [ 1000.0, 126.0, 500, 100, 0.66 ],
+          [ 3000.0,  30.0                 ]
+        ]
+      },
+      "values": { 
+        "every"  : 2, 
+        "offset" : 150, 
+        "style" : { "size": 52 },
+        "power" : 3     
+      },
+      "arcs": [
+        { "offset"  : 205, 
+          "width"   : 30, 
+          "segments": [
+            [ 1850.0, "lime"  ],
+            [ 2500.0, "gold"  ],
+            [ 2600.0          ]
+          ]
+        },
+        { "offset"  : 218, 
+          "width"   : 4, 
+          "segments": [
+            [  500.0, "white" ],
+            [ 3000.0          ]
+          ]
+        }
+      ],
+      "redlines": { "offset" : [ 220, 155 ], "values" : [ 2700 ], "width"  : 6 }
+    },
+    { "kind": "circular",
+      "center": [ 580, 360 ],
+      "marks": {
+        "offset": [ 220, 182, 170 ],
+        "width": 4,
+        "sections": [
+          [    0.0, -160.0,   0            ],
+          [  500.0, -150.0,   0, 100, 0.66 ],
+          [ 1000.0, -126.0, 500, 100, 0.66 ],
+          [ 3000.0,  -30.0                 ]
+        ]
+      },
+      "values": { 
+        "every"  : 2, 
+        "offset" : 150, 
+        "style" : { "size": 52 },
+        "power" : 3       
+      },
+      "arcs": [
+        { "offset"  : 205, 
+          "width"   : 30, 
+          "segments": [
+            [ 1850.0, "lime"  ],
+            [ 2500.0, "gold"  ],
+            [ 2600.0          ]
+          ]
+        },
+        { "offset"  : 218, 
+          "width"   : 4, 
+          "segments": [
+            [  500.0, "white" ],
+            [ 3000.0          ]
+          ]
+        }
+      ],
+      "redlines": { "offset" : [ 220, 155 ], "values" : [ 2700 ], "width"  : 6 }
+    }
+  ],
+  "gauges" : [
+    { "variable" : [ "GENERAL ENG RPM:1", "RPM" ],
+      "value"    : 0.0,
+      "scale"    : 1,
+      "indicator": [ "needle 7.png", 450, 450 ],
+      "animation": [ "LOG", 0.05  ]
+    },
+    { "variable" : [ "GENERAL ENG RPM:2", "RPM" ],
+      "value"    : 0.0,
+      "scale"    : 2,
+      "indicator": [ "needle 7.png", 450, 450 ],
+      "animation": [ "LOG", 0.05  ]
+    }
+  ]
+}  
