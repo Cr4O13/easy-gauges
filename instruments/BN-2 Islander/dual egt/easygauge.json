@@ -35,7 +35,9 @@
           ]
         }
       ],
-      "redlines": { "offset" : [ 180, 160 ], "values" : [ 1675 ], "width"  : 6 }
+      "redlines": [
+        { "offset" : [ 180, 160 ], "values" : [ 1675 ], "width"  : 6 }
+      ]
     },
     { "kind": "circular",
       "center": [ 540, 360 ],
@@ -64,7 +66,9 @@
           ]
         }
       ],
-      "redlines": { "offset" : [ 180, 160 ], "values" : [ 1675 ], "width"  : 6 }
+      "redlines": [
+        { "offset" : [ 180, 160 ], "values" : [ 1675 ], "width"  : 6 }
+      ]
     }
   ],
   "gauges" : [

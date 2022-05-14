@@ -43,7 +43,9 @@
           ]
         }
       ],
-      "redlines": { "offset" : [ 220, 155 ], "values" : [ 2700 ], "width"  : 6 }
+      "redlines": [
+        { "offset" : [ 220, 155 ], "values" : [ 2700 ], "width"  : 6 }
+      ]
     },
     { "kind": "circular",
       "center": [ 580, 360 ],
@@ -80,7 +82,9 @@
           ]
         }
       ],
-      "redlines": { "offset" : [ 220, 155 ], "values" : [ 2700 ], "width"  : 6 }
+      "redlines": [
+        { "offset" : [ 220, 155 ], "values" : [ 2700 ], "width"  : 6 }
+      ]
     }
   ],
   "gauges" : [

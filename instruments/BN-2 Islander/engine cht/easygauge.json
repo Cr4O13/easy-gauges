@@ -25,7 +25,9 @@
           ]
         }
       ],
-      "redlines": { "offset" : [ 200, 170 ], "values" : [ 500 ], "width"  : 8 }
+      "redlines": ü
+        { "offset" : [ 200, 170 ], "values" : [ 500 ], "width"  : 8 }
+      ]
     }
   ],    
   "gauges" : [

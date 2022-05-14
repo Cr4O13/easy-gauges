@@ -32,7 +32,9 @@
           ]
         }
       ],
-      "redlines": { "offset" : [ 300, 240 ], "color": "blue", "values" : [ 23.0], "width"  : 6 },
+      "redlines": [
+        { "offset" : [ 300, 240 ], "color": "blue", "values" : [ 23.0], "width"  : 6 }
+      ],
       "markups" : [
         { "style": {"size": 20, "color":"red" }, "position": [360, 440], "text": "BELOW 2200 RPM" },
         { "style": {"size": 20, "color":"red" }, "position": [360, 470], "text": "MANIFOLD PRESSURE" },
