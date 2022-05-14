@@ -1,0 +1,40 @@
+{ "name": "BN-2 - Main Bus Voltage (EasyGauge)",
+  "background": [ "background_520x460_161616.png" ],
+  "cover"     : [ "cover_520x460.png" ],
+  "bezel"     : [ "bezel_520x460.png" ],
+  "canvas"    : [ 0, 0, 520, 460 ],
+  "markups" : [
+    { "style": {"size": 54}, "position": [260, 180], "text": "VOLTS" }
+  ],
+  "scales": [
+    { "kind": "circular",
+      "center": [ 260, 300 ],
+      "marks": {
+        "offset": [200, 220, 232 ],
+        "width": 6,
+        "sections": [
+          [  15.0, -60.0, 5, 2.5 ],
+          [  35.0,  60.0         ]
+        ]
+      },
+      "values": { 
+        "every"  : 1, 
+        "offset" : 255,
+        "style" : { "size": 40 },
+        "power"  : 0
+      }
+    }
+  ],
+  "gauges" : [
+    { "variable" : [ "ELECTRICAL MAIN BUS VOLTAGE", "VOLTS" ],
+      "value"    : 0.0,
+      "scale"    : 1,
+      "indicator": [ "needle 3.png", 600, 600 ],
+      "sections": [
+        [  15.0, -60.0 ],
+        [  35.0,  60.0 ]
+      ],
+      "animation": [ "LOG", 0.05  ]
+    }
+  ]
+}

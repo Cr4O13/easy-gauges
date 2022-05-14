@@ -1,0 +1,51 @@
+{ "name": "BN-2 - Flap Position (EasyGauge)",
+  "background": [ "background_460x520_161616.png" ],
+  "cover"     : [ "cover_460x520.png" ],
+  "bezel"     : [ "bezel_460x520.png" ],
+  "canvas"    : [ 0, 0, 460, 520 ],
+  "markups" : [
+    { "style": {"size": 54}, "position": [250, 180], "text": "F" },
+    { "style": {"size": 54}, "position": [250, 235], "text": "L" },
+    { "style": {"size": 54}, "position": [250, 285], "text": "A" },
+    { "style": {"size": 54}, "position": [250, 340], "text": "P" }
+  ],
+  "scales": [
+    { "kind": "circular",
+      "center": [ 140, 260 ],
+      "marks": {
+        "offset": [220, 240, 250 ],
+        "width": 6,
+        "sections": [
+          [  -0.05,  40.0, 0 ],
+          [   1.05, 140.0    ]
+        ]
+      },
+      "arcs": [
+        { "offset"  : 235, 
+          "width"   :  30, 
+          "segments": [
+            [ -0.05, "white"  ],
+            [  0.15           ],
+            [  0.40, "white"  ],
+            [  0.50           ],
+            [  0.90, "white"  ],
+            [  1.05           ]
+          ]
+        }
+      ],
+      "markups" : [
+        { "style": {"size": 54}, "position": [340,  50], "text": "UP" },
+        { "style": {"size": 54}, "position": [420, 240], "text": "TO" },
+        { "style": {"size": 54}, "position": [370, 470], "text": "DOWN" } 
+      ]
+    }
+  ],
+  "gauges" : [
+    { "variable" : [ "TRAILING EDGE FLAPS LEFT PERCENT", "PERCENT OVER 100" ],
+      "value"    : 0.0,
+      "scale"    : 1,
+      "indicator": [ "needle 3.png", 600, 600 ],
+      "animation": [ "LOG", 0.05  ]
+    }
+  ]
+}

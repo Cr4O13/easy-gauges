@@ -1,0 +1,44 @@
+{ "name": "BN-2 - Engine CHT (EasyGauge)",
+  "bezel" : [ "bezel_50.png" ],
+  "cover" : [],
+  "markups" : [
+    { "style": {"size": 32}, "position": [260, 150], "text": "°F" },
+    { "style": {"size": 32}, "position": [260, 180], "text": "CYL. TEMP" }
+  ],
+  "scales": [
+    { "center": [ 260, 280 ],
+      "marks": { 
+        "offset"  : [ 200, 180, 170 ], 
+        "sections": [
+          [  100, -60.0,   0 ],
+          [  200, -50.0, 100 ],
+          [  600,  50.0,   0 ],
+          [  700,  60.0      ]
+        ]
+      },
+      "values": { "offset": 226, "style" : { "size": 40 } },
+      "arcs": [
+        { "offset": 180, "width": 20, "segments": [ 
+            [ 150, "green"  ],
+            [ 435, "yellow" ],
+            [ 500           ]
+          ]
+        }
+      ],
+      "redlines": { "offset" : [ 200, 170 ], "values" : [ 500 ], "width"  : 8 }
+    }
+  ],    
+  "gauges" : [
+    { "variable"  : [ "ENG CYLINDER HEAD TEMPERATURE:%s", "FAHRENHEIT" ],
+      "value"     : 15.0,
+      "indicator" : [ "needle.png" ],
+      "sections": [
+        [  100, -60.0  ],
+        [  250, -50.0  ],
+        [  750,  50.0  ],
+        [  780,  60.0  ]
+      ],
+      "animation" : [ "LOG", 0.05 ]
+    }
+  ]
+}

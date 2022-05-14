@@ -1,0 +1,65 @@
+{ "name": "BN-2 - Dual Engine Manifold Pressure (EasyGauge)",
+  "background": [ "background 161616.png" ],
+  "cover"     : [  ],
+  "bezel"     : [ "bezel.png" ],
+  "canvas"    : [ 0, 0, 720, 720 ],
+  "markups" : [
+    { "style": {"size": 16}, "position": [360, 220], "text": "INCHES MERCURY" }, 
+    { "style": {"size": 36}, "position": [360, 260], "text": "MANIFOLD" },
+    { "style": {"size": 36}, "position": [360, 300], "text": "PRESSURE" }
+  ],
+  "scales": [
+    { "kind": "circular",
+      "center": [ 360, 360 ],
+      "marks": {
+        "offset": [300, 260, 240 ],
+        "width": 6,
+        "sections": [
+          [  0.0, -165.0, 5, 1, 0.5 ],
+          [ 60.0,  165.0, 5, 5, 0.5 ]
+        ]
+      },
+      "values": { 
+        "every"  : 2, 
+        "offset" : 200,
+        "style" : { "size": 52 },
+        "power"  : 0
+      },
+      "arcs": [
+        { "offset"  : 290, 
+          "width"   : 10, 
+          "segments": [
+          ]
+        }
+      ],
+      "redlines": { "offset" : [ 300, 240 ], "color": "blue", "values" : [ 23.0], "width"  : 6 },
+      "markups" : [
+        { "style": {"size": 20, "color":"red" }, "position": [360, 440], "text": "BELOW 2200 RPM" },
+        { "style": {"size": 20, "color":"red" }, "position": [360, 470], "text": "MANIFOLD PRESSURE" },
+        { "style": {"size": 20, "color":"red" }, "position": [360, 500], "text": "MUST NOT EXCEED 23 inHg" }
+      ]
+    }
+  ],
+  "gauges" : [
+    { "variable" : [ "ENG MANIFOLD PRESSURE:1", "INHG" ],
+      "value"    : 29.92,
+      "scale"    : 1,
+      "indicator": [ "needle_left.png", 620, 620 ],
+      "sections": [
+        [ -16.0, -165.0 ],
+        [  80.0,  165.0 ]
+      ],
+      "animation": [ "LOG", 0.05  ]
+    },
+    { "variable" : [ "ENG MANIFOLD PRESSURE:2", "INHG" ],
+      "value"    : 29.92,
+      "scale"    : 1,
+      "indicator": [ "needle_right.png", 620, 620 ],
+      "sections": [
+        [ -16.0, -165.0 ],
+        [  80.0,  165.0 ]
+      ],
+      "animation": [ "LOG", 0.05  ]
+    }
+  ]
+}  

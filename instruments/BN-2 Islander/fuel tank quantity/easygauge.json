@@ -1,0 +1,43 @@
+{ "name": "BN-2 - Fuel Tank Quantity (EasyGauge)",
+  "background": [ "background_520x460_161616.png" ],
+  "cover"     : [ "cover_520x460.png" ],
+  "bezel"     : [ "bezel_520x460.png" ],
+  "canvas"    : [ 0, 0, 520, 460 ],
+  "markups" : [
+    { "style": {"size": 32}, "position": [260,  20], "text": "U.S. GALL" },
+    { "style": {"size": 32}, "position": [260, 200], "text": "FUEL CONTENTS" }
+  ],
+  "scales": [
+    { "kind": "circular",
+      "center": [ 260, 300 ],
+      "marks": {
+        "offset": [200, 220, 232 ],
+        "width": 6,
+        "sections": [
+          [   0.0, -60.0, 10, 5, 0.7 ],
+          [  10.0, -30.0, 10, 5, 0.7 ],
+          [  30.0,  10.0, 10, 5, 0.7 ],
+          [  65.0,  60.0, 10, 5, 0.7 ],
+          [  66.0,  61.0             ]
+        ]
+      },
+      "values": { 
+        "every"  : 2, 
+        "offset" : 255,
+        "style" : { "size": 40 },
+        "power"  : 0
+      },
+      "markups" : [
+        { "style": {"size": 56}, "position": [260, 160], "text": "%s" }
+      ]
+    }
+  ],
+  "gauges" : [
+    { "variable" : [ "FUEL TANK %s MAIN QUANTITY", "GALLONS" ],
+      "value"    : 32.0,
+      "scale"    : 1,
+      "indicator": [ "needle 3.png", 600, 600 ],
+      "animation": [ "LOG", 0.05  ]
+    }
+  ]
+}  

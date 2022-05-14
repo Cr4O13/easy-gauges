@@ -1,0 +1,19 @@
+A NOTE ON THE BN-2 ISLANDER by BLACKBOCKSIMULATIONS
+
+The instruments in this folder have been created for the Britten-Norman 
+BN-2 Islander by BlackBoxSimulations for Microsoft Flight Simulator 2020.
+
+Unfortunately many instruments in the 3D-cockpit of this aircraft do not 
+show the value that you can subscribe to from Air Manager. 
+
+But when flying the aircraft, it appeares as if the values shown in the 
+3D-cockpit are correct for many flight situations. One can assume 
+the systems simulation by BlackBoxSimulations is at fault, and the 
+instruments have been tweaked/faked to show the expected values.
+
+I had to replicate the tweaks to have the "Easy Gauges" show the same 
+values as the instrument in the 3D-cockpit. To achieve this I used an
+advanced feature from "Easy Gauges":
+Some "gauge" specifications contain a "sections" field that allows to 
+tweak the indications. This should be used for such exceptional cases only. 
+In all other cases, the "scale" reference index gives the best indication. 

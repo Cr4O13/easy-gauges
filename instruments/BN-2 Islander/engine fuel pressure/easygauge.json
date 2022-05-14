@@ -1,0 +1,48 @@
+{ "name": "BN-2 - Engine Fuel Pressure (EasyGauge)",
+  "bezel" : [ "bezel_50.png" ],
+  "cover" : [],
+  "markups" : [
+    { "style": {"size": 32}, "position": [260, 150], "text": "psi" },
+    { "style": {"size": 32}, "position": [260, 180], "text": "FUEL PRESSURE" }
+  ],
+  "scales": [
+    { "center": [ 260, 280 ],
+      "marks": { 
+        "offset"  : [ 170, 195, 200 ], 
+        "sections": [
+          [    0, -60.0,   0 ],
+          [   10, -50.0,  10, 5, 0.5 ],
+          [   20, -30.0,  10, 5, 0.5 ],
+          [   30,   0.0,  10, 5, 0.5 ],
+          [   40,  50.0,   0 ],
+          [   50,  60.0      ]
+        ]
+      },
+      "values": { "offset": 226, "style" : { "size": 40 } },
+      "arcs": [
+        { "offset": 180, "width": 20, "segments": [ 
+            [  10, "red"    ],
+            [  12, "yellow" ],
+            [  20, "green"  ],
+            [  40          ]
+          ]
+        }
+      ],
+      "redlines": { "offset" : [ 200, 170 ], "values" : [ 40 ], "width"  : 8 }
+    }
+  ],    
+  "gauges" : [
+    { "variable"  : [ "GENERAL ENG FUEL PRESSURE:%s", "PSI" ],
+      "indicator" : [ "needle.png" ],
+      "sections": [
+        [    0, -60.0 ],
+        [    5, -50.0 ],
+        [   10, -30.0 ],
+        [   20,   0.0 ],
+        [   30,  50.0 ],
+        [   40,  60.0 ]
+      ],
+      "animation" : [ "LOG", 0.05 ]
+    }
+  ]
+}

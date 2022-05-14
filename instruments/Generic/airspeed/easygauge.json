@@ -1,0 +1,54 @@
+{ "name": "aircraft - instrument (EasyGauge)",
+  "background": [ "background.png" ],
+  "cover"     : [ "cover.png" ],
+  "bezel"     : [ "bezel.png" ],
+  "canvas"    : [ 0, 0, 720, 720 ],
+  "markups" : [
+    { "text": "KNOTS",    "style": {"size": 48}, "position": [360, 280]},
+    { "text": "Airspeed", "style": {"size": 42}, "position": [360, 460]}
+  ],
+
+  "scales": [
+    { "kind": "circular",
+      "center": [ 360, 360 ],
+      "marks": { 
+        "offset"  : [ 288, 242, 228 ], "width"   : 8, "sections": [
+          [    0,   0.0             ],
+          [   40,  30.0, 10, 5, 0.5 ],
+          [  184, 340.0             ]
+        ]
+      },
+      "arcs": [
+        { "offset"  : 254, "width"   : 24, "segments": [ 
+            [  45, "white"   ],
+            [  80            ]
+          ]
+        },
+        { "offset"  : 275, "width"   : 26, "segments": [ 
+            [  60, "#38bf2c"   ],
+            [ 140, "yellow"  ],
+            [ 175            ]
+          ]
+        },
+        { "offset"  : 265, "width"   : 46, "segments": [ 
+            [ 175, "red"     ],
+            [ 177            ]
+          ]
+        }
+      ],
+      "values": { 
+        "power" : 0, 
+        "every"  : 2, 
+        "offset" : 175, 
+        "style" : { "size": 62 } 
+      },
+      "redlines": { "offset" : [ 288, 200 ], "values" : [ 69.5 ], "width"  : 10, "color": "blue"}
+    }
+  ],
+  "gauges" : [
+    { "variable"  : [ "AIRSPEED INDICATED", "KNOTS" ],
+      "indicator" : [ "needle.png", 670, 670 ],
+      "animation" : [ "LOG", 0.05 ]
+    }
+  ]
+}  
