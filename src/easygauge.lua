@@ -53,7 +53,7 @@ end
     semantic = "1.0.0",
     build    = "Home",
     pre      = "BETA",
-    sub_rel  = "1"
+    sub_rel  = "2"
   }
 
   local version = VERSION.semantic .. " " .. VERSION.build 
@@ -298,12 +298,12 @@ end
     end
   end 
        
-  local eg_redline = function ( value, scale )
+  local eg_redline = function ( value, redline, scale )
     local cx, cy = table.unpack( scale.center )
-    local r1, r2 = table.unpack( scale.redlines.offset )
+    local r1, r2 = table.unpack( redline.offset )
     -- handle missing fields
-    local color = scale.redlines.color or EASYGAUGE.REDLINE.COLOR
-    local width = scale.redlines.width or EASYGAUGE.REDLINE.WIDTH
+    local color = redline.color or EASYGAUGE.REDLINE.COLOR
+    local width = redline.width or EASYGAUGE.REDLINE.WIDTH
            
     if scale.kind == KIND.CIRCULAR then
       local rad = math.rad(interpolate_linear(scale.marks.sections, value, true))
@@ -318,10 +318,12 @@ end
 
   local eg_redlines = function (scale)
     if scale.redlines then
-      if scale.redlines.offset then
-        local values = scale.redlines.values or {}
-        for _, value in ipairs(values) do
-          eg_redline( value, scale )
+      for _, redline in ipairs(scale.redlines) do
+        if redline.offset then
+          local values = redline.values or {}
+          for _, value in ipairs(values) do
+            eg_redline( value, redline, scale )
+          end
         end
       end
     end
