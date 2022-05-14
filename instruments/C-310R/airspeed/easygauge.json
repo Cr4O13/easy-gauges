@@ -1,0 +1,44 @@
+{ "name": "C-310R - Airspeed (Easy Gauge)",
+  "cover" : [],
+  "markups" : [
+    { "style": {"size": 32}, "position": [362,  85], "text": "0" },
+    { "style": {"size": 36}, "position": [360, 265], "text": "AIRSPEED" },
+    { "style": {"size": 36}, "position": [360, 310], "text": "KNOTS"    }
+  ],
+  "scales": [
+    { "marks": { 
+        "offset"  : [ 290, 255, 244 ], "width"   : 4, 
+        "sections": [
+          [    0,   0.0,  0          ],
+          [   50,  40.0, 10,  5, 0.5 ],
+          [  100, 115.0, 10,  5, 0.5 ],
+          [  300, 345.0              ]
+        ]
+      },
+      "values": { "every": 5, "offset": 205, "style": { "size": 36 } },
+      "arcs": [
+        { "offset": 283, "width": 14, "segments": [ 
+            [  80, "lime"  ],
+            [ 181, "gold"  ],
+            [ 223          ]
+          ]
+        },
+        { "offset": 270, "width": 14, "segments": [ 
+            [  71, "white" ],
+            [ 140          ]
+          ]
+        }
+      ],
+      "redlines": [
+        { "offset" : [ 290, 230 ], "values" : [ 80, 223 ], "width"  : 8 },
+        { "offset" : [ 290, 230 ], "values" : [ 105 ], "width"  : 8, "color": "blue"}
+      ]
+    }
+  ],    
+  "gauges" : [
+    { "variable"  : [ "AIRSPEED INDICATED", "KNOTS" ],
+      "indicator" : [ "needle.png" ],
+      "animation" : [ "LOG", 0.05 ]
+    }
+  ]
+}

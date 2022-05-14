@@ -1,0 +1,43 @@
+{ "name": "C-310R - Vertical Speed (Easy Gauge)",
+  "cover" : [],
+  "markups" : [
+    { "style": {"size": 36}, "position": [360, 260], "text": "VERTICAL" },
+    { "style": {"size": 36}, "position": [360, 310], "text": "SPEED"    },
+    { "style": {"size": 28, "color": "RoyalBlue" }, "position": [360, 410], "text": "FT/MIN"    },
+    { "style": {"size": 28, "color": "RoyalBlue" }, "position": [360, 445], "text": "X 1000"    }
+  ],
+  "scales": [
+    { "marks": { 
+        "offset"  : [ 290, 260, 244 ], "width": 6, 
+        "sections": [
+          [ -3000, -264.0, 1000, 500        ],
+          [ -2000, -212.0, 1000, 500, 0.666 ],
+          [ -1000, -148.0, 1000, 100, 0.666 ],
+          [     0,  -90.0, 1000, 100, 0.666 ],
+          [  1000,  -32.0, 1000, 500, 0.666 ],
+          [  2000,   32.0, 1000, 500        ],
+          [  3000,   84.0                   ]
+        ]
+      },
+      "markups": [ 
+        { "style": {"size": 60}, "position": [140, 360], "text": "0"  },
+        { "style": {"size": 60}, "position": [240, 190], "text": "1"  },
+        { "style": {"size": 60}, "position": [240, 535], "text": "1"  },
+        { "style": {"size": 60}, "position": [478, 185], "text": "2"  },
+        { "style": {"size": 60}, "position": [478, 535], "text": "2"  },
+        { "style": {"size": 60}, "position": [580, 360], "text": "3"  },
+        { "style": {"size": 46, "font": "arimo_bold.ttf" }, "position": [160, 245], "text": ".5"  },
+        { "style": {"size": 46, "font": "arimo_bold.ttf" }, "position": [160, 480], "text": ".5"  }
+      ],
+      "redlines": [
+        { "offset": [ 290, 250 ], "width": 6, "color": "LightYellow", "values": [ -500, 500 ] }
+      ]
+    }
+  ],    
+  "gauges" : [
+    { "variable"  : [ "VERTICAL SPEED", "FEET PER MINUTE" ],
+      "indicator" : [ "needle.png", 56, 504 ],
+      "animation" : [ "LOG", 0.05 ]
+    }
+  ]
+}

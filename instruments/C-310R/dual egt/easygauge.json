@@ -1,0 +1,58 @@
+{ "name": "BN-2 - Dual Engine EGT (EasyGauge)",
+  "background": [ "background.png" ],
+  "cover"     : [ "cover.png" ],
+  "bezel"     : [ "bezel.png" ],
+  "canvas"    : [ 0, 0, 720, 720 ],
+  "markups" : [
+    { "style": {"size": 60}, "position": [360, 180], "text": "EGT"       },
+    { "style": {"size": 32}, "position": [360, 540], "text": "25 °F/FIV" }
+  ],
+  "scales": [
+    { "kind": "circular",
+      "center": [ 180, 360 ],
+      "marks": {
+        "offset": [ 179, 155, 140 ],
+        "width": 6,
+        "sections": [
+          [ 1200.0, 145.0,   0           ],
+          [ 1300.0, 140.0, 100, 20, 0.75 ],
+          [ 1800.0,  40.0, 200           ],
+          [ 1900.0,  45.0                ]
+        ]
+      },
+      "markups" : [
+        { "style": {"size": 60}, "position": [240, 490], "text": "L" }
+      ]
+    },
+    { "kind": "circular",
+      "center": [ 540, 360 ],
+      "marks": {
+        "offset": [ 179, 155, 140 ],
+        "width": 6,
+        "sections": [
+          [ 1200.0, -145.0,   0           ],
+          [ 1300.0, -140.0, 100, 20, 0.75 ],
+          [ 1800.0,  -40.0, 200           ],
+          [ 1900.0,  -45.0                ]
+        ]
+      },
+      "markups" : [
+        { "style": {"size": 60}, "position": [480, 490], "text": "R" }
+      ]
+    }
+  ],
+  "gauges" : [
+    { "variable" : [ "GENERAL ENG EXHAUST GAS TEMPERATURE:1", "FAHRENHEIT" ],
+      "value"    : 0.0,
+      "scale"    : 1,
+      "indicator": [ "needle.png", 570, 570 ],
+      "animation": [ "LOG", 0.05  ]
+    },
+    { "variable" : [ "GENERAL ENG EXHAUST GAS TEMPERATURE:2", "FAHRENHEIT" ],
+      "value"    : 0.0,
+      "scale"    : 2,
+      "indicator": [ "needle.png", 570, 570 ],
+      "animation": [ "LOG", 0.05  ]
+    }
+  ]
+}  

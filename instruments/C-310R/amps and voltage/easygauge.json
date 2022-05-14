@@ -1,0 +1,66 @@
+{ "name": "C-310R - Amps and Voltage (EasyGauge)",
+  "background": [ "background_520x460_161616.png" ],
+  "cover"     : [ "cover_520x460.png" ],
+  "bezel"     : [ "bezel_520x460.png" ],
+  "canvas"    : [ 0, 0, 520, 460 ],
+  "markups" : [
+    { "style": {"size": 42, "halign": "left"  }, "position": [ 20,  40], "text": "AMPS"  },
+    { "style": {"size": 42, "halign": "left"  }, "position": [ 20, 230], "text": "VOLTS" },
+    { "style": {"size": 24, "halign": "right" }, "position": [500, 240], "text": "MODEL MV" }
+  ],
+  "scales": [
+    { "kind": "circular",
+      "center": [ 260, 330 ],
+      "marks": {
+        "offset": [240, 250, 256 ],
+        "width": 4,
+        "sections": [
+          [ -25.0, -45.0, 25, 5 ],
+          [   0.0, -33.0, 25, 5 ],
+          [ 125.0,  45.0        ]
+        ]
+      },
+      "arcs": [
+        { "offset"  : 240, "width"   : 4, "segments": [ 
+            [ -25, "white"   ],
+            [ 125            ]
+          ]
+        }
+      ],
+      "values": { 
+        "every"  : 1, 
+        "offset" : 275,
+        "style" : { "size": 42 }
+      }
+    },
+    { "kind": "circular",
+      "center": [ 260, 330 ],
+      "marks": {
+        "offset": [240, 230, 224 ],
+        "width": 4,
+        "sections": [
+          [  0.0, -33.0, 10, 2   ],
+          [ 30.0,  45.0          ]
+        ]
+      },
+      "values": { 
+        "every"  : 1, 
+        "offset" : 200,
+        "style" : { "size": 42 }
+      }
+    }
+  ],
+  "gauges" : [
+    { "variable" : [ "c310r/elec/value", "FLOAT", "SI" ],
+      "value"    : 0.0,
+      "scale"    : 2,
+      "sections" : [
+          [ -0.25, -45.0 ],
+          [  0.00, -33.0 ],
+          [  1.00,  45.0        ]
+      ],
+      "indicator": [ "needle 3.png", 650, 650 ],
+      "animation": [ "LOG", 0.05  ]
+    }
+  ]
+}

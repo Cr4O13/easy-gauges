@@ -1,0 +1,59 @@
+{ "name": "C-310R - OAT (EasyGauge)",
+  "cover"     : [],
+  "markups" : [
+    { "style": {"size": 60}, "position": [ 360, 110 ], "text": "°C"  },
+    { "style": {"size": 60, "color": "RoyalBlue" }, "position": [ 360, 380 ], "text": "°F" },
+    { "style": {"size": 60}, "position": [ 360, 560 ], "text": "OAT" }
+  ],
+  "scales": [
+    { "kind": "circular",
+      "center": [ 360, 460 ],
+      "marks": {
+        "offset": [238, 218, 198 ],
+        "width": 6,
+        "color": "RoyalBlue",
+        "sections": [
+          [ -60.0, -45.0, 60, 10, 0.666 ],
+          [ 120.0,  45.0                ]
+        ]
+      },
+      "values": { 
+        "every"  : 1, 
+        "offset" : 160,
+        "style" : { "size": 60, "color": "RoyalBlue" }
+      }
+    },
+    { "kind": "circular",
+      "center": [ 360, 460 ],
+      "marks": {
+        "offset": [240, 260, 280 ],
+        "width": 6,
+        "sections": [
+          [ -51.0, -45.5                ],
+          [ -40.0, -35.0, 20, 10, 0.666 ],
+          [  49.0,  45.5                ]
+        ]
+      },
+      "arcs": [
+        { "offset"  : 240, "width"   : 4, "segments": [ 
+            [ -51, "white"   ],
+            [  49            ]
+          ]
+        }
+      ],
+      "values": { 
+        "every"  : 1, 
+        "offset" : 310,
+        "style" : { "size": 60 }
+      }
+    }
+  ],
+  "gauges" : [
+    { "variable" : [ "OUTSIDE AIR TEMPERATURE", "CELSIUS" ],
+      "value"    : 15.0,
+      "scale"    : 2,
+      "indicator": [ "needle 3.png", 650, 650 ],
+      "animation": [ "LOG", 0.05  ]
+    }
+  ]
+}
