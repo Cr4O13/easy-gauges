@@ -1,0 +1,90 @@
+{ "name": "C-310R - Dual Fuel Quantity (EasyGauge)",
+  "cover"     : [ ],
+  "markups" : [
+    { "style": {"size": 48}, "position": [360, 130], "text": "FUEL QTY"   },
+    { "style": {"size": 28, "color": "RoyalBlue"}, "position": [360, 570], "text": "GALS"    },
+    { "style": {"size": 28, "color": "RoyalBlue"}, "position": [360, 610], "text": "STD DAY" }
+  ],
+  "scales": [
+    { "kind": "circular",
+      "center": [ 180, 360 ],
+      "marks": { "offset": [ 160, 175, 180 ], "width": 6, "sections": [
+          [    0.0, 180.0, 10 ],
+          [   10.0, 144.0, 10 ],
+          [   40.0,  36.0, 10 ],
+          [   50.0,   0.0, 10 ],
+          [   51.7,  -6.0     ]
+        ]
+      },
+      "values": { "every": 3, "offset"  : 200, "style": {"size": 32, "color": "RoyalBlue"} },
+      "markups" : [
+        { "style": {"size": 32, "color": "RoyalBlue"}, "position": [360, 285], "text": "30" },
+        { "style": {"size": 32, "color": "RoyalBlue"}, "position": [360, 435], "text": "20" }
+      ]
+    },
+    { "kind": "circular",
+      "center": [ 540, 360 ],
+      "marks": { "offset": [ 160, 175, 180 ], "width": 6, "sections": [
+          [    0.0, -180.0, 10 ],
+          [   10.0, -144.0, 10 ],
+          [   40.0,  -36.0, 10 ],
+          [   50.0,    0.0, 10 ],
+          [   51.7,    6.0     ]
+        ]
+      },
+      "values": { "every": 3, "offset"  : 200, "style": {"size": 32, "color": "RoyalBlue"} }
+    },
+    { "kind": "circular",
+      "center": [ 180, 360 ],
+      "marks": { "offset": [ 160, 140, 130 ], "width": 6, "sections": [
+          [    0.0, 180.0, 50, 10, 0.7 ],
+          [  310.0,  -6.0              ]
+        ]
+      },
+      "arcs": [
+        { "offset": 160, "width": 4, "segments": [ 
+            [   0, "white"   ],
+            [ 310            ]
+          ]
+        }
+      ],
+      "values": { "offset": 105, "style": {"size": 32} },
+      "markups" : [
+        { "style": {"size": 36}, "position": [110, 360], "text": "LBS" }
+      ]
+    },
+    { "kind": "circular",
+      "center": [ 540, 360 ],
+      "marks": { "offset": [ 160, 140, 130 ], "width": 6, "sections": [
+          [    0.0, -180.0, 50, 10, 0.7 ],
+          [  310.0,    6.0              ]
+        ]
+      },
+      "arcs": [
+        { "offset"  : 160, "width"   : 4, "segments": [ 
+            [   0, "white"   ],
+            [ 310            ]
+          ]
+        }
+      ],
+      "values": { "offset"  : 105, "style": {"size": 32} },
+      "markups" : [
+        { "style": {"size": 36}, "position": [610, 360], "text": "LBS" }
+      ]
+    }
+  ],
+  "gauges" : [
+    { "variable" : [ "FUEL TANK LEFT MAIN QUANTITY", "GALLONS" ],
+      "value"    : 0.0,
+      "scale"    : 1,
+      "indicator": [ "needle.png" ],
+      "animation": [ "LOG", 0.05  ]
+    },
+    { "variable" : [ "FUEL TANK RIGHT MAIN QUANTITY", "GALLONS" ],
+      "value"    : 0.0,
+      "scale"    : 2,
+      "indicator": [ "needle.png" ],
+      "animation": [ "LOG", 0.05  ]
+    }
+  ]
+}  

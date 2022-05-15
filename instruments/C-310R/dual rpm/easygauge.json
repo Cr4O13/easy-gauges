@@ -1,0 +1,39 @@
+{ "name": "C-310R - Dual Engine RPM (EasyGauge)",
+  "background": [ "background 161616.png" ],
+  "cover"     : [  ],
+  "markups" : [
+    { "style": {"size": 48}, "position": [360, 250], "text": "RPM" },
+    { "style": {"size": 32, "color": "RoyalBlue"}, "position": [360, 300], "text": "X 100" }
+  ],
+  "scales": [
+    { "kind": "circular",
+      "center": [ 360, 360 ],
+      "marks": { "offset": [290, 260, 240 ], "width": 8, "sections": [
+          [    0.0, -105.0, 500, 100, 0.6 ],
+          [ 3400.0,  135.0            ]
+        ]
+      },
+      "values": { "offset": 195, "style": { "size": 68 }, "power": 2 },
+      "arcs": [
+        { "offset"  : 275, "width"   : 30, "segments": [
+            [ 2100, "green" ],
+            [ 2500         ]
+          ]
+        }
+      ],
+      "redlines": [
+        { "offset" : [ 290, 260 ], "values" : [ 2700 ], "width"  : 12 }
+      ]
+    }
+  ],
+  "gauges" : [
+    { "variable" : [ "GENERAL ENG RPM:1", "RPM" ],
+      "indicator": [ "needle_left.png", 620, 620 ],
+      "animation": [ "LOG", 0.05  ]
+    },
+    { "variable" : [ "GENERAL ENG RPM:2", "RPM" ],
+      "indicator": [ "needle_right.png", 620, 620 ],
+      "animation": [ "LOG", 0.05  ]
+    }
+  ]
+}  

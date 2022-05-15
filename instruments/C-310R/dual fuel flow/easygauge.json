@@ -1,0 +1,79 @@
+{ "name": "C-310R - Airspeed (Easy Gauge)",
+  "cover" : [],
+  "markups" : [
+    { "style": {"size": 48, "halign": "left" }, "position": [100, 310], "text": "FUEL" },
+    { "style": {"size": 48, "halign": "left" }, "position": [100, 350], "text": "FLOW" },
+    { "style": {"size": 48, "halign": "left" }, "position": [100, 390], "text": "LBS/HR"    }
+  ],
+  "scales": [
+    { "marks": { 
+        "offset"  : [ 290, 270, 260 ], "width"   : 5, 
+        "sections": [
+          [    0, -40.0,  0 ],
+          [   10, -20.0, 10 ],
+          [   50,   5.0, 10 ],
+          [  100,  70.0, 10 ],
+          [  159, 235.0     ]
+        ]
+      },
+      "values": { "every": 5, "offset": 210, "style": { "size": 48 } },
+      "arcs": [
+        { "offset": 275, "width": 30, "segments": [ 
+            [   8, "green"  ],
+            [ 159          ]
+          ]
+        },
+        { "offset": 135, "width": 30, "segments": [ 
+            [   56, "green"     ], [  64 ], 
+            [   67, "green"     ], [  75 ], 
+            [   79, "green"     ], [  86 ], 
+            [   91, "green"     ], [  99 ], 
+            [  105, "RoyalBlue" ], [ 109 ],
+            [  114, "RoyalBlue" ], [ 117 ],
+            [  122, "RoyalBlue" ], [ 126 ],
+            [  132, "RoyalBlue" ], [ 136 ],
+            [  147, "white"     ], [ 152 ]
+          ]
+        }
+      ],
+      "redlines": [
+        { "offset" : [ 290, 240 ], "values" : [ 0, 159 ], "width"  : 8 },
+        { "offset" : [ 290, 240 ], "values" : [ 50, 100, 150 ], "width"  : 8, "color": "white"}
+      ],
+      "markups" : [
+        { "style": {"size": 36, "color": "green" }, "position": [400, 310], "text": "CRUISE" },
+     
+        { "style": {"size": 36}, "position": [360, 275], "text": "%% POWER" },        
+        { "style": {"size": 32}, "position": [413, 204], "text": "45" },
+        { "style": {"size": 32}, "position": [452, 220], "text": "55" },
+        { "style": {"size": 32}, "position": [489, 251], "text": "65" },
+        { "style": {"size": 32}, "position": [510, 289], "text": "75" },
+        { "style": {"size": 32}, "position": [528, 425], "text": "6000" },
+        { "style": {"size": 32}, "position": [488, 480], "text": "4000" },
+        { "style": {"size": 32}, "position": [405, 522], "text": "2000" },
+        { "style": {"size": 36}, "position": [280, 505], "text": "SL." },
+        
+        { "style": {"size": 36, "color": "RoyalBlue" }, "position": [230, 200], "text": "2.3 PSI" },
+        { "style": {"size": 36, "color": "RoyalBlue" }, "position": [160, 475], "text": "21.7 PSI" },
+        
+        { "style": {"size": 32, "color": "RoyalBlue" }, "position": [534, 360], "text": "75%%" },
+        { "style": {"size": 36, "color": "RoyalBlue" }, "position": [430, 360], "text": "CLIMB" },
+        { "style": {"size": 36, "color": "RoyalBlue" }, "position": [360, 420], "text": "T.O. & CLIMB" }
+      ]
+    }
+  ],    
+  "gauges" : [
+    { "variable" : [ "ENG FUEL FLOW PPH:1", "POUNDS PER HOUR" ],
+      "value"    : 0.0,
+      "scale"    : 1,
+      "indicator": [ "needle_left.png", 620, 620 ],
+      "animation": [ "LOG", 0.05  ]
+    },
+    { "variable" : [ "ENG FUEL FLOW PPH:2", "POUNDS PER HOUR" ],
+      "value"    : 0.0,
+      "scale"    : 1,
+      "indicator": [ "needle_right.png", 620, 620 ],
+      "animation": [ "LOG", 0.05  ]
+    }
+  ]
+}

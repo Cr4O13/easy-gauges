@@ -1,0 +1,96 @@
+{ "name": "C-310R - Oil Pressure Temp and CHT (EasyGauge)",
+  "cover"     : [],
+  "markups" : [
+    { "style": {"font": "arimo_regular.ttf", "size": 48}, "position": [ 360, 460 ], "text": "TEMP" },
+    { "style": {"font": "arimo_regular.ttf", "size": 48}, "position": [ 360, 500 ], "text": "°F" }
+  ],
+  "scales": [
+    { "kind": "circular",
+      "center": [ 360, 260 ],
+      "markups" : [
+        { "style": {"font": "arimo_regular.ttf", "size": 48}, "position": [ 360, 320 ], "text": "OIL PSI"  }
+      ],
+      "marks": { "offset": [170, 144, 125 ], "width": 8, "sections": [
+          [   0.0, -90.0, 50, 10 ],
+          [ 120.0,  90.0         ]
+        ]
+      },
+      "arcs": [
+        { "offset": 157, "width": 26, "segments": [ 
+            [  30, "green"   ],
+            [  60            ]
+          ]
+        }
+      ],
+      "values": { "every"  : 2, "offset" : 96, "style" : { "size": 40 } },
+      "redlines": [ 
+        { "offset" : [ 170, 125 ], "values" : [ 10, 100 ], "width"  : 12 }
+      ]
+    },
+    { "kind": "circular",
+      "center": [ 273, 410 ],
+      "markups" : [
+        { "style": {"font": "arimo_regular.ttf", "size": 48}, "position": [ 300, 560 ], "text": "CYL" }
+      ],
+      "marks": { "offset": [170, 134, 125 ], "width": 8, "sections": [
+          [   0.0, -170.0,   0     ],
+          [ 100.0, -160.0, 100, 50, 0.6 ],
+          [ 500.0,  -60.0          ]
+        ]
+      },
+      "arcs": [
+        { "offset": 157, "width": 26, "segments": [ 
+            [ 200, "green"   ],
+            [ 450            ]
+          ]
+        }
+      ],
+      "values": { "every"  : 2, "offset" : 80, "style" : { "size": 32 } },
+      "redlines": [ 
+        { "offset" : [ 170, 125 ], "values" : [ 450 ], "width"  : 12 }
+      ]
+    },
+    { "kind": "circular",
+      "center": [ 447, 410 ],
+      "markups" : [
+        { "style": {"font": "arimo_regular.ttf", "size": 48}, "position": [ 420, 560 ], "text": "OIL" }
+      ],
+      "marks": { "offset": [170, 144, 125 ], "width": 8, "sections": [
+          [  32.0, 170.0, 0 ],
+          [ 250.0,  85.0    ]
+        ]
+      },
+      "arcs": [
+        { "offset": 157, "width": 26, "segments": [ 
+            [   0, "green"   ],
+            [ 250            ]
+          ]
+        }
+      ],
+      "values": { "every"  : 2, "offset" : 96, "style" : { "size": 40 } },
+      "redlines": [ 
+        { "offset" : [ 170, 125 ], "values" : [ 250 ], "width"  : 12 }
+      ]
+    }
+  ],
+  "gauges" : [
+    { "variable" : [ "GENERAL ENG OIL PRESSURE:%s", "PSI" ],
+      "value"    : 0.0,
+      "scale"    : 1,
+      "indicator": [ "needle 3.png", 400, 400 ],
+      "animation": [ "LOG", 0.05  ]
+    },
+    { "variable" : [ "ENG CYLINDER HEAD TEMPERATURE:%s", "FAHRENHEIT" ],
+      "value"    : 58.0,
+      "scale"    : 2,
+      "indicator": [ "needle 3.png", 400, 400 ],
+      "animation": [ "LOG", 0.05  ]
+    },
+    { "variable" : [ "GENERAL ENG OIL TEMPERATURE:%s", "FAHRENHEIT" ],
+      "value"    : 58.0,
+      "scale"    : 3,
+      "indicator": [ "needle 3.png", 400, 400 ],
+      "animation": [ "LOG", 0.05  ]
+    }
+  ]
+}

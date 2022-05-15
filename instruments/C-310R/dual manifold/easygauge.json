@@ -1,0 +1,50 @@
+{ "name": "C-310R - Dual Engine Manifold Pressure (EasyGauge)",
+  "background": [ "background 161616.png" ],
+  "cover"     : [  ],
+  "bezel"     : [ "bezel.png" ],
+  "canvas"    : [ 0, 0, 720, 720 ],
+  "markups" : [
+    { "style": {"size": 36}, "position": [360, 270], "text": "MANIFOLD" },
+    { "style": {"size": 36, "color": "RoyalBlue"}, "position": [360, 450], "text": "IN   HG" }
+  ],
+  "scales": [
+    { "kind": "circular",
+      "center": [ 360, 360 ],
+      "marks": {
+        "offset": [290, 260, 240 ],
+        "width": 8,
+        "sections": [
+          [  0.0,  -90.0, 0         ],
+          [ 10.0,  -35.0, 5, 1, 0.6 ],
+          [ 44.0,  220.0, 5, 5, 0.6 ]
+        ]
+      },
+      "values": {  
+        "offset" : 200,
+        "style" : { "size": 60 },
+        "power"  : 0
+      },
+      "arcs": [
+        { "offset"  : 275, 
+          "width"   : 30, 
+          "segments": [
+            [ 15.0, "green" ],
+            [ 24.5         ]
+          ]
+        }
+      ]
+    }
+  ],
+  "gauges" : [
+    { "variable" : [ "ENG MANIFOLD PRESSURE:1", "INHG" ],
+      "value"    : 29.92,
+      "indicator": [ "needle_left.png", 620, 620 ],
+      "animation": [ "LOG", 0.05  ]
+    },
+    { "variable" : [ "ENG MANIFOLD PRESSURE:2", "INHG" ],
+      "value"    : 29.92,
+      "indicator": [ "needle_right.png", 620, 620 ],
+      "animation": [ "LOG", 0.05  ]
+    }
+  ]
+}  
