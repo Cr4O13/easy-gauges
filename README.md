@@ -46,6 +46,10 @@ Support for gauges with horizontal or vertical scales is planned
 - Indicator animation smoothing
 - Many default settings for ease of specification
 
+Example: Cessna 310R - Dual Engine Fuel Flow Indicator
+
+<img src="./instruments/C-310R/dual fuel flow/preview.png" alt="Cessna 310R Dual Fuel Flow" stlye="float: left; margin-right: 10px;" />
+
 ## Advanced Features
 
 - User property "Index" supporting multiple instances a "Easy Gauge" instrument in the same panel.
