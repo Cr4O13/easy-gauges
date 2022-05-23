@@ -3,6 +3,7 @@ local eg = require "src/easygauge"
 local eg_version = eg.version
 local eg_image   = eg.image
 local eg_canvas  = eg.canvas
+local eg_switch  = eg.switch
 local eg_gauge   = eg.gauge
 local eg_instrument = eg.instrument
 
@@ -23,6 +24,10 @@ function easygauge()
       easygauge.id = eg_canvas()
       easygauge.canvas.center = { easygauge.canvas[CANVAS.WIDTH]/2, easygauge.canvas[CANVAS.HEIGHT]/2 }
       canvas_draw(easygauge.id, eg_instrument)
+      -- Switches
+      for _, switch in ipairs(easygauge.switches) do
+        eg_switch(switch)
+      end
       -- Gauges
       for _, gauge in ipairs(easygauge.gauges) do
         eg_gauge(gauge)

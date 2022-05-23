@@ -53,7 +53,7 @@ end
     semantic = "1.0.0",
     build    = "Home",
     pre      = "BETA",
-    sub_rel  = "2"
+    sub_rel  = "3"
   }
 
   local version = VERSION.semantic .. " " .. VERSION.build 
@@ -135,7 +135,13 @@ end
     if gauge.variable then
       if not gauge.update then
         gauge.update = function ( value )
-          gauge.value = value
+          -- Add Boolean support
+          if type(value) == "boolean" then 
+            gauge.value = fif(value, 1, 0) 
+          else
+            gauge.value = value
+          end
+          -- End add Boolean support
           gauge.indicate()
         end
       end
@@ -163,6 +169,28 @@ end
     eg_indicator( gauge )
     eg_subscription( gauge )
   end
+
+  -- switch support 
+  local eg_event = function ( control )
+    fs2020_event(control.event[control.value + 1])
+  end
+  
+  local eg_switch = function ( control )
+    local img_normal, img_pressed, x, y, w, h = table.unpack(control.switch)
+    if not img_normal  then img_normal  = nil end
+    if not img_pressed then img_pressed = nil end
+    if not control.toggle then
+      control.toggle = function ()
+        eg_event( control )
+      end
+    end
+    control.id = switch_add( img_normal, img_pressed, x-w/2, y-h/2, w, h, control.toggle )
+    control.indicate = function ()
+      switch_set_position(control.id, control.value)
+    end
+    eg_subscription( control )
+  end
+-- END switch support
 
   local eg_style = function ( style_spec  )
     local style  = style_spec or {}
@@ -360,6 +388,7 @@ end
     version    = VERSION,
     image      = eg_image,
     canvas     = eg_canvas,
+    switch     = eg_switch,
     gauge      = eg_gauge,
     instrument = eg_instrument
   }
