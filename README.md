@@ -18,6 +18,7 @@ Limitations in the current release:
 "Easy Gauges" currently supports
 - Microsoft Flight Simulator 2020
 - "Steam Gauges" with circular scales
+- Toggle (on/off) switches
 
 Support for other simulators is planned (all simulators supported by Air Manager).
 Support for gauges with horizontal or vertical scales is planned
@@ -44,6 +45,7 @@ Support for gauges with horizontal or vertical scales is planned
 - A subscription for each gauge
 - Received values are indicated with perfect match on the assigned scale
 - Indicator animation smoothing
+- Multiple toggle switches
 - Many default settings for ease of specification
 
 Example: Cessna 310R - Dual Engine Fuel Flow Indicator
@@ -67,6 +69,8 @@ Easy Gauges uses the following API functions:
 - user_prop_get
 - instrument_prop
 - img_add
+- switch_add
+- switch_set_position
 - canvas_add
 - canvas_draw
 - _move_to
@@ -75,7 +79,9 @@ Easy Gauges uses the following API functions:
 - _stroke
 - _text
 - fs2020_variable_subscribe
+- fs2020_event
 - si_variable_subscribe
 - interpolate_linear
 - rotate
+- fif
 - log
