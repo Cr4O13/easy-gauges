@@ -170,27 +170,89 @@ end
     eg_subscription( gauge )
   end
 
-  -- switch support 
-  local eg_event = function ( control )
-    fs2020_event(control.event[control.value + 1])
+  -- control support
+  local eg_action = function ( control, direction )
+    local dir = direction or 0
+    local position = control.value + 1
+    local new_position = position + dir
+    if control.event then
+      fs2020_event( control.event[position] )
+    elseif control.write then
+      print(control.write[new_position])
+      fs2020_variable_write(table.unpack(control.write[new_position]))
+    end
   end
   
-  local eg_switch = function ( control )
-    local img_normal, img_pressed, x, y, w, h = table.unpack(control.switch)
+  local eg_button = function ( control )
+    local img_normal, img_pressed, x, y, w, h = table.unpack(control.images)
     if not img_normal  then img_normal  = nil end
     if not img_pressed then img_pressed = nil end
-    if not control.toggle then
-      control.toggle = function ()
-        eg_event( control )
+    if not control.set then
+      control.set = function ()
+        eg_action( control )
       end
     end
-    control.id = switch_add( img_normal, img_pressed, x-w/2, y-h/2, w, h, control.toggle )
+    control.id = button_add( img_normal, img_pressed, x-w/2, y-h/2, w, h, control.set, control.set )
+    eg_subscription( control )
+  end
+ 
+  local eg_dial = function ( control )
+    local image, x, y, w, h = table.unpack(control.images)
+    if not control.set then 
+      control.set = function ( direction )
+        eg_action( control, direction )
+      end
+    end
+    control.id = dial_add( image, x-w/2, y-h/2, w, h, control.set )
+    touch_setting(control.id , "ROTATE_TICK", 6)
+    eg_subscription( control )
+  end
+  
+  local eg_toggle = function ( control )
+    local img_normal, img_pressed, x, y, w, h = table.unpack(control.images)
+    if not img_normal  then img_normal  = nil end
+    if not img_pressed then img_pressed = nil end
+    if not control.set then 
+      control.set = function ( position, direction)
+        eg_action( control, direction )
+      end
+    end
+    control.id = switch_add( img_normal, img_pressed, x-w/2, y-h/2, w, h, control.set )
     control.indicate = function ()
       switch_set_position(control.id, control.value)
     end
     eg_subscription( control )
   end
--- END switch support
+  
+  local eg_3_way = function ( control )
+    local img_1, img_2, img_3, x, y, w, h = table.unpack(control.images)
+    if not img_1 then img_1 = nil end
+    if not img_2 then img_2 = nil end
+    if not img_3 then img_3 = nil end
+    if not control.set then
+      control.set = function ( position, direction )
+        eg_action( control, direction )
+      end
+    end
+    control.id = switch_add( img_1, img_2, img_3, x-w/2, y-h/2, w, h, control.set )
+    control.indicate = function ()
+      switch_set_position(control.id, control.value)
+    end
+    eg_subscription( control )
+  end
+  
+  local eg_control = function (control)
+    if control.type == "buttton" then
+      eg_button(control)
+    elseif control.type == "toggle" then
+      eg_toggle(control)
+    elseif control.type == "3-way" then
+      eg_3_way(control)
+    elseif control.type == "dial" then
+      eg_dial(control)
+    end
+  end
+  -- END control support
 
   local eg_style = function ( style_spec  )
     local style  = style_spec or {}
@@ -259,20 +321,18 @@ end
   end
 
   local eg_arcs = function (scale)
-    if scale.arcs then
-      -- draw all arcs in the scale
-      for _, arc in ipairs(scale.arcs) do
-        -- handle missing arc fields
-        arc.width = arc.width or EASYGAUGE.ARC.WIDTH
-        arc.segments = arc.segments or { 
-          { scale.marks.sections[1][SECTION.VALUE], EASYGAUGE.ARC.COLOR },
-          { scale.marks.sections[#scale.marks.sections][SECTION.VALUE] }
-        }
-        if arc.offset then
-          -- draw all segments in the arc
-          for segment = 1, #arc.segments - 1 do
-            eg_arc_segment( segment, arc, scale )
-          end
+    -- draw all arcs in the scale
+    for _, arc in ipairs(scale.arcs or {}) do
+      -- handle missing arc fields
+      arc.width = arc.width or EASYGAUGE.ARC.WIDTH
+      arc.segments = arc.segments or { 
+        { scale.marks.sections[1][SECTION.VALUE], EASYGAUGE.ARC.COLOR },
+        { scale.marks.sections[#scale.marks.sections][SECTION.VALUE] }
+      }
+      if arc.offset then
+        -- draw all segments in the arc
+        for segment = 1, #arc.segments - 1 do
+          eg_arc_segment( segment, arc, scale )
         end
       end
     end
@@ -345,30 +405,37 @@ end
   end
 
   local eg_redlines = function (scale)
-    if scale.redlines then
-      for _, redline in ipairs(scale.redlines) do
-        if redline.offset then
-          local values = redline.values or {}
-          for _, value in ipairs(values) do
-            eg_redline( value, redline, scale )
-          end
+    for _, redline in ipairs(scale.redlines or {}) do
+      if redline.offset then
+        for _, value in ipairs(redline.values or {}) do
+          eg_redline( value, redline, scale )
         end
       end
     end
   end
 
   local eg_markups = function ( markups )
-    if markups then
-      for _, markup in ipairs( markups ) do
+    for _, markup in ipairs( markups or {}) do
+      if markup.text then
         local text = string.format(markup.text, eg_index)
         _txt(text, eg_style(markup.style), table.unpack(markup.position))
+      elseif markup.image then
+        local img, x, y, w, h = table.unpack(markup.image)
+        local resource = resource_info(img)
+        if resource and resource.TYPE == "IMAGE" then
+          w = w or resource.WIDTH
+          h = h or resource.HEIGHT
+          x = (x or 0) - w/2 
+          y = (y or 0) - h/2
+          eg_image( { img, x, y, w, h } )
+        end
       end
     end
   end
 
   local eg_instrument = function()
     -- draw scale features
-    for k, scale in ipairs( easygauge.scales ) do
+    for k, scale in ipairs( easygauge.scales or {}) do
       -- handle missing fields
       scale.kind   = scale.kind or KIND.CIRCULAR
       scale.center = scale.center or easygauge.canvas.center
@@ -377,6 +444,9 @@ end
       eg_scale( scale )  
       eg_redlines( scale )
       eg_markups( scale.markups )
+    end
+    for _, control in ipairs( easygauge.controls or {}) do
+      eg_markups( control.markups )
     end
     -- draw instrument markups
     eg_markups( easygauge.markups )
@@ -388,7 +458,7 @@ end
     version    = VERSION,
     image      = eg_image,
     canvas     = eg_canvas,
-    switch     = eg_switch,
+    control    = eg_control,
     gauge      = eg_gauge,
     instrument = eg_instrument
   }
