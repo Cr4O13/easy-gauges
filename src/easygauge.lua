@@ -53,7 +53,7 @@ end
     semantic = "1.0.0",
     build    = "Home",
     pre      = "BETA",
-    sub_rel  = "3"
+    sub_rel  = "5"
   }
 
   local version = VERSION.semantic .. " " .. VERSION.build 
@@ -90,41 +90,77 @@ end
   local easygauge = {}
 
   -- FUNCTIONS
+  -- drawing helper
+  local eg_style = function ( style_spec  )
+    local style  = style_spec or {}
+    
+    local font   = style.font   or EASYGAUGE.MARKUP.FONT
+    local size   = string.format("%i", style.size or EASYGAUGE.MARKUP.SIZE)
+    local color  = style.color  or EASYGAUGE.MARKUP.COLOR
+    local valign = style.valign or EASYGAUGE.MARKUP.VALIGN
+    local halign = style.halign or EASYGAUGE.MARKUP.HALIGN
+
+    return string.format(EASYGAUGE.MARKUP.FORMAT, font, size, color, valign, halign)
+  end
+
+  local eg_offsets = function ( kind, pos, r1, r2 )
+    if kind == KIND.CIRCULAR then
+      local rad = math.rad(pos)
+      local sin = math.sin(rad)
+      local cos = math.cos(rad)
+      return sin * r1, cos * r1, sin * r2, cos * r2
+    elseif kind == KIND.HORIZONTAL then
+      return pos, r1, pos, r2
+    elseif kind == KIND.VERTICAL then
+      return r1, pos, r2, pos
+    end
+  end
+
   -- API Wrappers
   local eg_image = function ( image )
-    if image[1] then
+    if type(image) == "table" then
       local img, x, y, w, h = table.unpack(image)
-      x = x or 0
-      y = y or 0
-      w = w or instrument_prop("PREF_WIDTH")
-      h = h or instrument_prop("PREF_HEIGHT")
-      if resource_info(img) then
-        return img_add( img, x, y, w, h )
+      if img then
+        local resource = resource_info(img)
+        if resource and resource.TYPE == "IMAGE" then
+          img_add( img, x or 0, y or 0, w or instrument_prop("PREF_WIDTH"), h or instrument_prop("PREF_HEIGHT") )
+        end
       end
     end
   end
 
   local eg_canvas = function ( )
     easygauge.canvas = easygauge.canvas or { 0, 0, instrument_prop("PREF_WIDTH"), instrument_prop("PREF_HEIGHT") }
-    return canvas_add( table.unpack(easygauge.canvas) )
+    if type(easygauge.canvas) == "table" then
+      return canvas_add( table.unpack(easygauge.canvas) )
+    end
   end
 
   local eg_indicator = function ( gauge )
     local indicator = gauge.indicator or { EASYGAUGE.IMAGE.INDICATOR }
-    local img, w, h, x, y  = table.unpack(indicator)
-    if img then
-      local resource = resource_info(img)
-      if resource and resource.TYPE == "IMAGE" then
-        w = w or resource.WIDTH
-        h = h or resource.HEIGHT
-        x = easygauge.canvas[1] + gauge.center[1] - w/2 + (x or 0)
-        y = easygauge.canvas[2] + gauge.center[2] - h/2 + (y or 0)
-        gauge.indicator = add_image( { img, x, y, w, h } )
-        local animation = gauge.animation or {}
-        if not gauge.indicate then
-          gauge.indicate = function ()
-            local position = interpolate_linear( gauge.sections, gauge.value, true )
-            rotate(gauge.indicator, position, table.unpack(animation) )
+    if type(indicator) == "table" then
+      local img, w, h, x, y  = table.unpack(indicator)
+      if img then
+        local resource = resource_info(img)
+        if resource and resource.TYPE == "IMAGE" then
+          local ccx, ccy = table.unpack(easygauge.canvas)
+          local gcx, gcy = table.unpack(gauge.center)
+          w = w or resource.WIDTH
+          h = h or resource.HEIGHT
+          x = ccx + gcx - w/2 + (x or 0)
+          y = ccy + gcy - h/2 + (y or 0)
+          gauge.indicator = img_add( img, x, y, w, h )
+          local animation = gauge.animation or {}
+          if not gauge.indicate then
+            gauge.indicate = function ()
+              local pos = interpolate_linear( gauge.sections, gauge.value, true )
+              if gauge.kind == KIND.CIRCULAR then
+                rotate(gauge.indicator, pos, table.unpack(animation) )
+              elseif gauge.kind == KIND.HORIZONTAL or gauge.kind == KIND.VERTICAL then
+                local dx, dy = eg_offsets( gauge.kind, pos, 0, 0 )
+                move(gauge.indicator, x + dx, y + dy, w, h, table.unpack(animation) )
+              end
+            end
           end
         end
       end
@@ -135,13 +171,11 @@ end
     if gauge.variable then
       if not gauge.update then
         gauge.update = function ( value )
-          -- Add Boolean support
           if type(value) == "boolean" then 
             gauge.value = fif(value, 1, 0) 
           else
             gauge.value = value
           end
-          -- End add Boolean support
           gauge.indicate()
         end
       end
@@ -165,7 +199,8 @@ end
     -- gauge properties
     gauge.center   = gauge.center or scale.center
     gauge.sections = gauge.sections or scale.marks.sections
-    gauge.value    = gauge.value or 0.0
+    gauge.kind     = scale.kind
+    gauge.value    = gauge.value or 0
     eg_indicator( gauge )
     eg_subscription( gauge )
   end
@@ -178,7 +213,6 @@ end
     if control.event then
       fs2020_event( control.event[position] )
     elseif control.write then
-      print(control.write[new_position])
       fs2020_variable_write(table.unpack(control.write[new_position]))
     end
   end
@@ -254,72 +288,69 @@ end
   end
   -- END control support
 
-  local eg_style = function ( style_spec  )
-    local style  = style_spec or {}
-    
-    local font   = style.font   or EASYGAUGE.MARKUP.FONT
-    local size   = string.format("%i", style.size or EASYGAUGE.MARKUP.SIZE)
-    local color  = style.color  or EASYGAUGE.MARKUP.COLOR
-    local valign = style.valign or EASYGAUGE.MARKUP.VALIGN
-    local halign = style.halign or EASYGAUGE.MARKUP.HALIGN
-
-    return string.format(EASYGAUGE.MARKUP.FORMAT, font, size, color, valign, halign)
-  end
-
-  local eg_minor_mark = function( mark, scale, thinn )
-    local cx, cy = table.unpack( scale.center )
+  -- drawing
+  local eg_draw_minor_mark = function( mark, scale, thinn )
     local r1, r2, _ = table.unpack( scale.marks.offset )
-    
-    local color = scale.marks.color 
-    local width = scale.marks.width 
-    
-    if scale.kind == KIND.CIRCULAR then
-                            
-      local rad = math.rad( interpolate_linear(scale.marks.sections, mark, true) )
-      local sin = math.sin(rad)
-      local cos = math.cos(rad)
-              
-      _move_to(cx + sin * r2, cy - cos * r2)
-      _line_to(cx + sin * r1, cy - cos * r1)
-      _stroke(color, width * thinn)
-    end
+    local pos = interpolate_linear(scale.marks.sections, mark, true)
+    local dx1, dy1, dx2, dy2 = eg_offsets( scale.kind, pos, r1, r2 )
+    local cx, cy = table.unpack( scale.center )
+    _move_to(cx + dx1, cy - dy1)
+    _line_to(cx + dx2, cy - dy2)
+    _stroke(scale.marks.color, scale.marks.width * thinn)
   end
 
-  local eg_major_mark = function( mark, scale )
-    local cx, cy = table.unpack( scale.center )
+  local eg_draw_major_mark = function( mark, scale )
+    local pos = interpolate_linear(scale.marks.sections, mark, true)
     local r1, _, r2 = table.unpack( scale.marks.offset )
-
-    local color = scale.marks.color 
-    local width = scale.marks.width 
-    
-    if scale.kind == KIND.CIRCULAR then
-                            
-      local rad = math.rad( interpolate_linear(scale.marks.sections, mark, true) )
-      local sin = math.sin(rad)
-      local cos = math.cos(rad)
-              
-      _move_to(cx + sin * r2, cy - cos * r2)
-      _line_to(cx + sin * r1, cy - cos * r1)
-      _stroke(color, width)
-    end
+    local dx1, dy1, dx2, dy2 = eg_offsets( scale.kind, pos, r1, r2 )
+    local cx, cy = table.unpack( scale.center )
+    _move_to(cx + dx1, cy - dy1)
+    _line_to(cx + dx2, cy - dy2)
+    _stroke(scale.marks.color , scale.marks.width )
   end
 
-  local eg_arc_segment = function ( segment, arc, scale )
+  local eg_draw_scale_value = function ( value, scale )
+    local pos = interpolate_linear(scale.marks.sections, value, true)
+    local dx1, dy1, dx2, dy2 = eg_offsets( scale.kind, pos, scale.values.offset, 0 )
     local cx, cy = table.unpack( scale.center )
+    local text = string.format("%1.0f", value / scale.values.divisor)
+    _txt(text, eg_style(scale.values.style), cx + dx1, cy - dy1)
+  end
+
+  local eg_draw_redline = function ( value, redline, scale )
+    local pos = interpolate_linear(scale.marks.sections, value, true)
+    local dx1, dy1, dx2, dy2 = eg_offsets( scale.kind, pos, table.unpack( redline.offset ) )
+    local cx, cy = table.unpack( scale.center )
+    local color = redline.color or EASYGAUGE.REDLINE.COLOR
+    local width = redline.width or EASYGAUGE.REDLINE.WIDTH
+    _move_to(cx + dx1, cy - dy1)
+    _line_to(cx + dx2, cy - dy2)
+    _stroke(color, width)
+  end
+
+  local eg_draw_segment = function ( segment, arc, scale )
     local color = arc.segments[segment][SEGMENT.COLOR]
-    -- draw segment when color is specified, otherwise skip
     if color then
-      if scale.kind == KIND.CIRCULAR then 
-        local settings = scale.marks.sections
-        local angle1 = interpolate_linear(settings, arc.segments[segment][SEGMENT.VALUE],     true) + EASYGAUGE.ARC.ZERO
-        local angle2 = interpolate_linear(settings, arc.segments[segment + 1][SEGMENT.VALUE], true) + EASYGAUGE.ARC.ZERO 
-                
-        _arc(cx, cy, angle1, angle2, arc.offset, angle2 > angle1 )
+      local cx, cy = table.unpack( scale.center )
+      local settings = scale.marks.sections
+      local pos1 = interpolate_linear(settings, arc.segments[segment][SEGMENT.VALUE],     true)
+      local dx1, dy1 = eg_offsets( scale.kind, pos1, arc.offset, 0 )      
+      local pos2 = interpolate_linear(settings, arc.segments[segment + 1][SEGMENT.VALUE], true) 
+      local dx2, dy2 = eg_offsets( scale.kind, pos2, arc.offset, 0 )      
+      if scale.kind == KIND.CIRCULAR then
+        pos1 = pos1 + EASYGAUGE.ARC.ZERO
+        pos2 = pos2 + EASYGAUGE.ARC.ZERO 
+        _arc(cx, cy, pos1, pos2, arc.offset, pos2 > pos1 )
+        _stroke(color, arc.width)
+      elseif scale.kind == KIND.HORIZONTAL or scale.kind == KIND.VERTICAL then  
+        _move_to(cx + dx1, cy - dy1)
+        _line_to(cx + dx2, cy - dy2)
         _stroke(color, arc.width)
       end
     end
   end
-
+  
+  -- scale features
   local eg_arcs = function (scale)
     -- draw all arcs in the scale
     for _, arc in ipairs(scale.arcs or {}) do
@@ -332,27 +363,13 @@ end
       if arc.offset then
         -- draw all segments in the arc
         for segment = 1, #arc.segments - 1 do
-          eg_arc_segment( segment, arc, scale )
+          eg_draw_segment( segment, arc, scale )
         end
       end
     end
   end
 
-  local eg_scale_value = function ( value, scale )
-    local cx, cy = table.unpack( scale.center )
-    local rv = scale.values.offset
-    
-    if scale.kind == KIND.CIRCULAR then
-      local rad = math.rad(interpolate_linear(scale.marks.sections, value, true))
-      local sin = math.sin(rad)
-      local cos = math.cos(rad)
-       
-      local text = string.format("%1.0f", value / scale.values.divisor)
-      _txt(text, eg_style(scale.values.style), cx + sin * rv, cy - cos * rv)
-    end
-  end
-
-  local eg_scale = function (scale)
+  local eg_markings_and_values = function (scale)
     -- handle missing marking attributes
     scale.marks.color = scale.marks.color or EASYGAUGE.MARKS.COLOR
     scale.marks.width = scale.marks.width or EASYGAUGE.MARKS.WIDTH
@@ -368,47 +385,29 @@ end
         
         -- draw minor section marks
         for mark = min, max, minor_step do
-          eg_minor_mark( mark, scale, thinn )
+          eg_draw_minor_mark( mark, scale, thinn )
         end
         -- draw major section marks
         for mark = min, max, major_step do
-          eg_major_mark( mark, scale )
+          eg_draw_major_mark( mark, scale )
         end
         -- draw section values
         if scale.values then
           local every = scale.values.every or 1
           scale.values.divisor = 10^(scale.values.power or 0)
           for value = min, max, major_step * every do
-            eg_scale_value( value, scale )
+            eg_draw_scale_value( value, scale )
           end
         end
       end
     end
   end 
        
-  local eg_redline = function ( value, redline, scale )
-    local cx, cy = table.unpack( scale.center )
-    local r1, r2 = table.unpack( redline.offset )
-    -- handle missing fields
-    local color = redline.color or EASYGAUGE.REDLINE.COLOR
-    local width = redline.width or EASYGAUGE.REDLINE.WIDTH
-           
-    if scale.kind == KIND.CIRCULAR then
-      local rad = math.rad(interpolate_linear(scale.marks.sections, value, true))
-      local sin = math.sin(rad)
-      local cos = math.cos(rad)
-      
-      _move_to(cx + sin * r1, cy - cos * r1)
-      _line_to(cx + sin * r2, cy - cos * r2)
-      _stroke(color, width)
-    end
-  end
-
   local eg_redlines = function (scale)
     for _, redline in ipairs(scale.redlines or {}) do
       if redline.offset then
         for _, value in ipairs(redline.values or {}) do
-          eg_redline( value, redline, scale )
+          eg_draw_redline( value, redline, scale )
         end
       end
     end
@@ -425,30 +424,27 @@ end
         if resource and resource.TYPE == "IMAGE" then
           w = w or resource.WIDTH
           h = h or resource.HEIGHT
-          x = (x or 0) - w/2 
-          y = (y or 0) - h/2
-          eg_image( { img, x, y, w, h } )
+          img_add( img, (x or 0) - w/2 , (y or 0) - h/2, w, h )
         end
       end
     end
   end
 
   local eg_instrument = function()
-    -- draw scale features
     for k, scale in ipairs( easygauge.scales or {}) do
       -- handle missing fields
       scale.kind   = scale.kind or KIND.CIRCULAR
       scale.center = scale.center or easygauge.canvas.center
-      
+      -- draw scale features
       eg_arcs( scale )
-      eg_scale( scale )  
+      eg_markings_and_values( scale )  
       eg_redlines( scale )
       eg_markups( scale.markups )
     end
     for _, control in ipairs( easygauge.controls or {}) do
       eg_markups( control.markups )
     end
-    -- draw instrument markups
+    -- instrument markups
     eg_markups( easygauge.markups )
   end
 
