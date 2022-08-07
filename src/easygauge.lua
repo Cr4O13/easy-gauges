@@ -174,7 +174,11 @@ end
           if type(value) == "boolean" then 
             gauge.value = fif(value, 1, 0) 
           else
-            gauge.value = value
+            local position = value
+            if gauge.map then
+              position = gauge.map[string.format("%d", value)]
+            end
+            gauge.value = position
           end
           gauge.indicate()
         end
@@ -211,7 +215,12 @@ end
     local position = control.value + 1
     local new_position = position + dir
     if control.event then
-      fs2020_event( control.event[position] )
+      local event = control.event[new_position]
+      if type(event) == "table" then
+        fs2020_event( table.unpack(event) )
+      else
+        fs2020_event( event )
+      end
     elseif control.write then
       fs2020_variable_write(table.unpack(control.write[new_position]))
     end
