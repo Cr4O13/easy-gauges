@@ -5,6 +5,8 @@
   "canvas"    : [ 0, 0, 720, 720 ],
   "markups" : [
   ],
+  "controls": [
+  ],
   "scales": [
   ],
   "gauges" : [
