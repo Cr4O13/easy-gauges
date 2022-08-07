@@ -52,8 +52,8 @@ end
   local VERSION = {
     semantic = "1.0.0",
     build    = "Home",
-    pre      = "BETA",
-    sub_rel  = "5"
+    pre      = "RC",
+    sub_rel  = "1"
   }
 
   local version = VERSION.semantic .. " " .. VERSION.build 
