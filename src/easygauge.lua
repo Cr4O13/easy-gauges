@@ -277,48 +277,11 @@ end
     eg_subscription( control )
   end
   
-  local eg_toggle = function ( control )  -- deprecated
-    local img_normal, img_pressed, x, y, w, h = table.unpack(control.images)
-    if not img_normal  then img_normal  = nil end
-    if not img_pressed then img_pressed = nil end
-    if not control.set then 
-      control.set = function ( position, direction)
-        eg_action( control, direction )
-      end
-    end
-    control.id = switch_add( img_normal, img_pressed, x-w/2, y-h/2, w, h, control.set )
-    control.indicate = function ()
-      switch_set_position(control.id, control.value)
-    end
-    eg_subscription( control )
-  end
-  
-  local eg_3_way = function ( control )  -- deprecated
-    local img_1, img_2, img_3, x, y, w, h = table.unpack(control.images)
-    if not img_1 then img_1 = nil end
-    if not img_2 then img_2 = nil end
-    if not img_3 then img_3 = nil end
-    if not control.set then
-      control.set = function ( position, direction )
-        eg_action( control, direction )
-      end
-    end
-    control.id = switch_add( img_1, img_2, img_3, x-w/2, y-h/2, w, h, control.set )
-    control.indicate = function ()
-      switch_set_position(control.id, control.value)
-    end
-    eg_subscription( control )
-  end
-  
   local eg_control = function (control)
     if control.type == "buttton" then
       eg_button(control)
     elseif control.type == "switch" then
       eg_switch(control)
---    elseif control.type == "toggle" then -- deprecated
---      eg_toggle(control)
---    elseif control.type == "3-way" then -- deprecated
---      eg_3_way(control)
     elseif control.type == "dial" then
       eg_dial(control)
     end
