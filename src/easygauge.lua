@@ -211,18 +211,25 @@ end
 
   -- control support
   local eg_action = function ( control, direction )
-    local dir = direction or 0
-    local position = control.value + 1
-    local new_position = position + dir
+    direction = direction or 0
+    local i = control.value + direction + 1
     if control.event then
-      local event = control.event[new_position]
-      if type(event) == "table" then
-        fs2020_event( table.unpack(event) )
-      else
-        fs2020_event( event )
+      local event = control.event[i]
+      if event then
+        if type(event) == "string" then
+          event = { event }
+        end
+        if type(event) == "table" then
+          fs2020_event( table.unpack(event) )
+        end
       end
     elseif control.write then
-      fs2020_variable_write(table.unpack(control.write[new_position]))
+      local message = control.write[i]
+      if message then
+        if type(message) == "table" then
+          fs2020_variable_write( table.unpack(message) )
+        end
+      end
     end
   end
   
