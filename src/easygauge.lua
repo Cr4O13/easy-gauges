@@ -178,7 +178,7 @@ end
             if gauge.map then
               position = gauge.map[string.format("%d", value)]
             end
-            gauge.value = position
+            gauge.value = position or gauge.value
           end
           gauge.indicate()
         end
