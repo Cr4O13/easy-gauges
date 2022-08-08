@@ -308,10 +308,10 @@ end
       eg_button(control)
     elseif control.type == "switch" then
       eg_switch(control)
-    elseif control.type == "toggle" then -- deprecated
-      eg_toggle(control)
-    elseif control.type == "3-way" then -- deprecated
-      eg_3_way(control)
+--    elseif control.type == "toggle" then -- deprecated
+--      eg_toggle(control)
+--    elseif control.type == "3-way" then -- deprecated
+--      eg_3_way(control)
     elseif control.type == "dial" then
       eg_dial(control)
     end
