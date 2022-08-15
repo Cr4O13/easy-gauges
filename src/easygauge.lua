@@ -53,7 +53,7 @@ end
     semantic = "1.0.0",
     build    = "Home",
     pre      = "RC",
-    sub_rel  = "3"
+    sub_rel  = "4"
   }
 
   local version = VERSION.semantic .. " " .. VERSION.build 
