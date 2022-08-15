@@ -53,7 +53,7 @@ end
     semantic = "1.0.0",
     build    = "Home",
     pre      = "RC",
-    sub_rel  = "2"
+    sub_rel  = "3"
   }
 
   local version = VERSION.semantic .. " " .. VERSION.build 
@@ -210,87 +210,208 @@ end
   end
 
   -- control support
-  local eg_action = function ( control, direction )
-    local dir = direction or 0
-    local position = control.value + 1
-    local new_position = position + dir
-    if control.event then
-      local event = control.event[new_position]
-      if type(event) == "table" then
-        fs2020_event( table.unpack(event) )
-      else
-        fs2020_event( event )
+  local eg_button_action = function ( button, action )
+    if type(action) == "table" then
+      if action[1] == "event" then
+        local event = action[2]
+        if type(event) == "string" then
+          event = { event }
+        end
+        if type(event) == "table" then
+          return function () 
+            fs2020_event( table.unpack(event) ) 
+          end
+        end
+      elseif action[1] == "set" then
+        local set = action[2]
+        if type(set) == "string" then
+          set = { set }
+        end
+        if type(set) == "table" then
+          local event, index = table.unpack(set)
+          -- map here
+          if index then
+            return function () 
+              local value = fif(button.state, 0, 1)
+              fs2020_event( event, index, value ) 
+            end
+          else
+            return function () 
+              local value = fif(button.state, 0, 1)
+              fs2020_event( event, value ) 
+            end
+          end
+        end
+      elseif action[1] == "write" then
+        local variable, unit = table.unpack(action[2])
+        local value = not button.state
+        return function () fs2020_variable_write( variable, unit, value ) end
       end
-    elseif control.write then
-      fs2020_variable_write(table.unpack(control.write[new_position]))
     end
   end
   
-  local eg_button = function ( control )
-    local img_normal, img_pressed, x, y, w, h = table.unpack(control.images)
+  local eg_button = function ( button )
+    local img_normal, img_pressed, x, y, w, h = table.unpack(button.images)
     if not img_normal  then img_normal  = nil end
     if not img_pressed then img_pressed = nil end
-    if not control.set then
-      control.set = function ()
-        eg_action( control )
-      end
+    if button.press then
+      button.press = eg_button_action( button, button.press )
     end
-    control.id = button_add( img_normal, img_pressed, x-w/2, y-h/2, w, h, control.set, control.set )
-    eg_subscription( control )
+    if button.release then
+      button.release = eg_button_action( button, button.release )
+    end
+    button.id = button_add( img_normal, img_pressed, x-w/2, y-h/2, w, h, button.press, button.release )
+    button.indicate = function () end 
+    eg_subscription( button )
   end
  
-  local eg_dial = function ( control )
-    local image, x, y, w, h = table.unpack(control.images)
-    if not control.set then 
-      control.set = function ( direction )
-        eg_action( control, direction )
+  local eg_switch_action = function ( switch, action )
+    if type(action) == "table" then
+      if action[1] == "event" then
+        local eventlist = action[2]
+        if type(eventlist) == "table" then
+          return function (position, direction)
+            local event = eventlist[ 1 + position + direction ]
+            if type(event) == "string" then
+              event = { event }
+            end
+            if type(event) == "table" then
+              fs2020_event( table.unpack(event) )
+            end
+          end
+        end
+      elseif action[1] == "set" then
+        local event = action[2]
+        if type(event) == "string" then
+          event = { event }
+        end
+        if type(event) == "table" then
+          return function (position, direction)
+            local event, index = table.unpack(event)
+            local value = position + direction
+            if switch.set then
+              value = switch.set[ 1 + value ]
+            end
+            if index then
+              fs2020_event( event, index, value )
+            else
+              fs2020_event( event, value )
+            end
+          end
+        end
+      elseif action[1] == "write" then
+        local writer = action[2]
+        if type(writer) == "table" then
+          return function (position, direction) 
+            local variable, unit = table.unpack(writer)
+            local value = position + direction
+            if switch.set then
+              value = switch.set[ 1 + value ]
+            end
+            fs2020_variable_write( variable, unit, value )
+          end
+        end
       end
     end
-    control.id = dial_add( image, x-w/2, y-h/2, w, h, control.set )
-    touch_setting(control.id , "ROTATE_TICK", 6)
-    eg_subscription( control )
   end
   
-  local eg_toggle = function ( control )
-    local img_normal, img_pressed, x, y, w, h = table.unpack(control.images)
-    if not img_normal  then img_normal  = nil end
-    if not img_pressed then img_pressed = nil end
-    if not control.set then 
-      control.set = function ( position, direction)
-        eg_action( control, direction )
-      end
+  local eg_switch = function ( switch )
+    local x, y, w, h, args = table.unpack(switch.images) -- select
+    if switch.select then
+      switch.select = eg_switch_action( switch, switch.select )
     end
-    control.id = switch_add( img_normal, img_pressed, x-w/2, y-h/2, w, h, control.set )
-    control.indicate = function ()
-      switch_set_position(control.id, control.value)
+    if switch.press then
+      switch.press = eg_switch_action( switch, switch.press )
     end
-    eg_subscription( control )
+    if switch.release then
+      switch.release = eg_switch_action( switch, switch.release )
+    end
+    table.insert(args, x-w/2)
+    table.insert(args, y-h/2)
+    table.insert(args, w)
+    table.insert(args, h)
+    table.insert(args, switch.select) 
+    table.insert(args, switch.press) 
+    table.insert(args, switch.release) 
+    switch.id = switch_add( table.unpack(args) )
+    switch.indicate = function ()
+      switch_set_position(switch.id, switch.value)
+    end
+    eg_subscription( switch )
   end
   
-  local eg_3_way = function ( control )
-    local img_1, img_2, img_3, x, y, w, h = table.unpack(control.images)
-    if not img_1 then img_1 = nil end
-    if not img_2 then img_2 = nil end
-    if not img_3 then img_3 = nil end
-    if not control.set then
-      control.set = function ( position, direction )
-        eg_action( control, direction )
+  local DEC , INC = -1, 1
+  local i = { [DEC] = 1, [INC] = 2 }
+  
+  local eg_dial_action = function ( dial, action )
+    if type(action) == "table" then
+      if action[1] == "event" then
+        local eventlist = action[2]
+        if type(eventlist) == "table" then
+          return function (direction) 
+            local event = eventlist[ i[direction] ]
+            if type(event) == "string" then
+              event = { event }
+            end
+            if type(event) == "table" then
+              fs2020_event( table.unpack(event) )
+            end
+          end
+        end     
+      elseif action[1] == "set" then
+        local event = action[2]
+        if type(event) == "string" then
+          event = { event }
+        end
+        if type(event) == "table" then
+          return function (direction)
+            local event, index = table.unpack(event)
+            local low, high, step = table.unpack(dial.cap)
+            local value = var_cap(dial.value + direction * (step or 1), low, high)
+            -- map here
+            if index then
+              fs2020_event( event, index, value )
+            else
+              fs2020_event( event, value )
+            end
+          end
+        end
+      elseif action[1] == "write" then
+        local writer = action[2]
+        if type(writer) == "table" then
+          return function (direction) 
+            local variable, unit = table.unpack(writer)
+            local value = var_cap(dial.value + direction * (step or 1), low, high)
+            -- map here
+            fs2020_variable_write( variable, unit, value )
+          end
+        end
       end
     end
-    control.id = switch_add( img_1, img_2, img_3, x-w/2, y-h/2, w, h, control.set )
-    control.indicate = function ()
-      switch_set_position(control.id, control.value)
+  end
+  
+  local eg_dial = function ( dial )
+    local image, x, y, w, h = table.unpack(dial.images)
+    if dial.select then 
+      dial.select = eg_dial_action( dial, dial.select )
     end
-    eg_subscription( control )
+    if dial.press then 
+      dial.press = eg_dial_action( dial, dial.press )
+    end
+    if dial.release then 
+      dial.release = eg_dial_action( dial, dial.release )
+    end
+    dial.id = dial_add( image, x-w/2, y-h/2, w, h, dial.select, dial.press, dial.release )
+    touch_setting(dial.id , "ROTATE_TICK", 6)
+    dial.indicate = function () end 
+    eg_subscription( dial )
   end
   
   local eg_control = function (control)
-    if control.type == "buttton" then
+    if control.type == "button" then
       eg_button(control)
-    elseif control.type == "toggle" then
-      eg_toggle(control)
-    elseif control.type == "3-way" then
-      eg_3_way(control)
+    elseif control.type == "switch" then
+      eg_switch(control)
     elseif control.type == "dial" then
       eg_dial(control)
     end
