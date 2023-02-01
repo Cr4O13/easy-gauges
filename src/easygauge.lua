@@ -192,7 +192,7 @@ end
           else
             local position = value
             if gauge.map then
-              position = gauge.map[string.format("%d", value)]
+              position = gauge.map[string.format("%d", value // 1)]
             end
             gauge.value = position or gauge.value
           end
