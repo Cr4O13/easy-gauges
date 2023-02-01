@@ -146,10 +146,10 @@ end
         end
         if not gauge.indicate then
           gauge.indicate = function ()
+            local format = gauge.format or "%.1f"
             local out = interpolate_linear( gauge.sections, gauge.value, true )
-            print(out)
             for _, display in ipairs(gauge.displays) do
-              txt_set( display, string.format("%.1f", out) )
+              txt_set( display, string.format(format, out) )
             end
           end
         end
