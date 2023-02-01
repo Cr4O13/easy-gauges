@@ -138,7 +138,23 @@ end
 
   local eg_indicator = function ( gauge )
     local indicator = gauge.indicator or { EASYGAUGE.IMAGE.INDICATOR }
-    if type(indicator) == "table" then
+    if type(indicator) == "string" then
+      if indicator == "display" then
+        for n, display in ipairs(gauge.displays) do
+          local x, y, w, h = table.unpack(display.position)
+          gauge.displays[n] = txt_add( display.text, eg_style(display.style), x, y, w, h )
+        end
+        if not gauge.indicate then
+          gauge.indicate = function ()
+            local out = interpolate_linear( gauge.sections, gauge.value, true )
+            print(out)
+            for _, display in ipairs(gauge.displays) do
+              txt_set( display, string.format("%.1f", out) )
+            end
+          end
+        end
+      end
+    elseif type(indicator) == "table" then
       local img, w, h, x, y  = table.unpack(indicator)
       if img then
         local resource = resource_info(img)
@@ -203,7 +219,7 @@ end
     -- gauge properties
     gauge.center   = gauge.center or scale.center
     gauge.sections = gauge.sections or scale.marks.sections
-    gauge.kind     = scale.kind
+    gauge.kind     = gauge.kind or scale.kind
     gauge.value    = gauge.value or 0
     eg_indicator( gauge )
     eg_subscription( gauge )
