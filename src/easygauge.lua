@@ -226,6 +226,7 @@ end
   end
 
   -- control support
+  -- Button
   local eg_button_action = function ( button, action )
     if type(action) == "table" then
       if action[1] == "event" then
@@ -245,7 +246,7 @@ end
         end
         if type(set) == "table" then
           local event, index = table.unpack(set)
-          -- map here
+          -- TODO map here
           if index then
             return function () 
               local value = fif(button.state, 0, 1)
@@ -280,7 +281,9 @@ end
     button.indicate = function () end 
     eg_subscription( button )
   end
- 
+  -- END Button
+  
+  -- Switch
   local eg_switch_action = function ( switch, action )
     if type(action) == "table" then
       if action[1] == "event" then
@@ -355,7 +358,9 @@ end
     end
     eg_subscription( switch )
   end
+  -- END Switch
   
+  -- Dial
   local DEC , INC = -1, 1
   local i = { [DEC] = 1, [INC] = 2 }
   
@@ -380,10 +385,11 @@ end
           event = { event }
         end
         if type(event) == "table" then
+          local event, index = table.unpack(event)
+          local low, high, step = table.unpack(dial.cap)
+          local value = 0
           return function (direction)
-            local event, index = table.unpack(event)
-            local low, high, step = table.unpack(dial.cap)
-            local value = var_cap(dial.value + direction * (step or 1), low, high)
+            value = var_cap(value + direction * (step or 1), low, high)
             -- map here
             if index then
               fs2020_event( event, index, value )
@@ -395,10 +401,12 @@ end
       elseif action[1] == "write" then
         local writer = action[2]
         if type(writer) == "table" then
+          local variable, unit = table.unpack(writer)
+          local low, high, step = table.unpack(dial.cap)
+          local value = 0
           return function (direction) 
-            local variable, unit = table.unpack(writer)
-            local value = var_cap(dial.value + direction * (step or 1), low, high)
-            -- map here
+            value = var_cap(value + direction * (step or 1), low, high)
+            -- TODO map here
             fs2020_variable_write( variable, unit, value )
           end
         end
@@ -422,6 +430,7 @@ end
     dial.indicate = function () end 
     eg_subscription( dial )
   end
+  -- END Dial
   
   local eg_control = function (control)
     if control.type == "button" then
