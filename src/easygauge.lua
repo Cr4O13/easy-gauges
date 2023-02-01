@@ -432,13 +432,99 @@ end
   end
   -- END Dial
   
-  local eg_control = function (control)
+  -- Slider
+  local eg_slider_action = function ( slider, action )
+    if type(action) == "table" then
+      if action[1] == "event" then
+        local event = action[2]
+        if event then
+          return function (position)
+            if not slider.variable then            
+              slider.value = position
+              slider_set_position(slider.id, slider.value)
+            end 
+            if type(event) == "string" then
+              event = { event }
+            end
+            if type(event) == "table" then
+              local event, index = table.unpack(event)
+              if index then
+                fs2020_event( string.format(event, eg_index), index )
+              else
+                fs2020_event( string.format(event, eg_index) )
+              end
+            end
+          end
+        end
+      elseif action[1] == "set" then
+        local event = action[2]
+        if type(event) == "string" then
+          event = { event }
+        end
+        if type(event) == "table" then
+          return function (position)
+            if not slider.variable then            
+              slider.value = position
+              slider_set_position(slider.id, slider.value)
+            end 
+            local event, index = table.unpack(event)
+            -- TODO map here
+            if index then
+              fs2020_event( string.format(event, eg_index), index, position * (slider.scale or 1) )
+            else
+              fs2020_event( string.format(event, eg_index), position * (slider.scale or 1) )
+            end
+          end
+        end
+      elseif action[1] == "write" then
+        local writer = action[2]
+        if type(writer) == "table" then
+          return function (position)
+            if not slider.variable then
+              slider.value = position
+              slider_set_position(slider.id, slider.value)
+            end 
+            local variable, unit = table.unpack(writer)
+            fs2020_variable_write( string.format(variable, eg_index), unit, position * (slider.scale or 1) )
+          end
+        end
+      end
+    end
+  end
+  
+  local eg_slider = function ( slider )
+    local x, y, width, height = table.unpack(slider.canvas)
+    local thumb_image, thumb_width, thumb_height = table.unpack(slider.images)
+    if slider.select then 
+      slider.select = eg_slider_action( slider, slider.select )
+    end
+    if slider.press then 
+      slider.press = eg_slider_action( slider, slider.press )
+    end
+    if slider.release then 
+      slider.release = eg_slider_action( slider, slider.release )
+    end
+    if slider.kind == "vertical" then
+      slider.id = slider_add_ver( nil, x, y, width, height, thumb_image, thumb_width, thumb_height, slider.select, slider.press, slider.release )
+    elseif slider.kind == "horizontal" then
+      slider.id = slider_add_hor( nil, x, y, width, height, thumb_image, thumb_width, thumb_height, slider.select, slider.press, slider.release )
+    end
+    slider.indicate = function ()
+      slider_set_position(slider.id, slider.value )
+    end 
+    eg_subscription( slider )
+  end
+-- END Slider
+
+local eg_control = function (control)
     if control.type == "button" then
       eg_button(control)
     elseif control.type == "switch" then
       eg_switch(control)
     elseif control.type == "dial" then
       eg_dial(control)
+    elseif control.type == "slider" then
+      eg_slider(control)
     end
   end
   -- END control support
